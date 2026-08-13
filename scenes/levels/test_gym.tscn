@@ -18,8 +18,8 @@ sky_material = SubResource("ProceduralSkyMaterial_blxge")
 background_mode = 2
 sky = SubResource("Sky_k6jok")
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_blxge"]
-data = PackedVector3Array(-10, -0.5, 10, -10, -0.5, -10, -10, 0.5, -10, 10, -0.5, -10, -10, -0.5, -10, -10, -0.5, 10, -10, 0.5, -10, -10, -0.5, -10, 10, -0.5, -10, -10, 0.5, -10, -10, 0.5, 10, -10, -0.5, 10, -10, -0.5, 10, -10, 0.5, 10, 10, 0.5, 10, 10, 0.5, 10, -10, 0.5, 10, -10, 0.5, -10, -10, -0.5, 10, 10, -0.5, 10, 10, -0.5, -10, 10, 0.5, 10, 10, -0.5, 10, -10, -0.5, 10, 10, -0.5, -10, 10, -0.5, 10, 10, 0.5, 10, 10, -0.5, -10, 10, 0.5, -10, -10, 0.5, -10, -10, 0.5, -10, 10, 0.5, -10, 10, 0.5, 10, 10, 0.5, 10, 10, 0.5, -10, 10, -0.5, -10)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_0ucrb"]
+data = PackedVector3Array(-25, -0.5, 25, -25, -0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, -0.5, -25, -25, -0.5, 25, -25, 0.5, -25, -25, -0.5, -25, 25, -0.5, -25, -25, 0.5, -25, -25, 0.5, 25, -25, -0.5, 25, -25, -0.5, 25, -25, 0.5, 25, 25, 0.5, 25, 25, 0.5, 25, -25, 0.5, 25, -25, 0.5, -25, -25, -0.5, 25, 25, -0.5, 25, 25, -0.5, -25, 25, 0.5, 25, 25, -0.5, 25, -25, -0.5, 25, 25, -0.5, -25, 25, -0.5, 25, 25, 0.5, 25, 25, -0.5, -25, 25, 0.5, -25, -25, 0.5, -25, -25, 0.5, -25, 25, 0.5, -25, 25, 0.5, 25, 25, 0.5, 25, 25, 0.5, -25, 25, -0.5, -25)
 
 [node name="TestGym" type="Node3D" unique_id=1514201132]
 metadata/_edit_lock_ = true
@@ -38,10 +38,10 @@ metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
 [node name="FloorMeshCSG" type="CSGBox3D" parent="StaticBody3D" unique_id=285593833]
-size = Vector3(20, 1, 20)
+size = Vector3(50, 1, 50)
 
-[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2071939189]
-shape = SubResource("ConcavePolygonShape3D_blxge")
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1390448255]
+shape = SubResource("ConcavePolygonShape3D_0ucrb")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
 ACCELERATION = 10.0
