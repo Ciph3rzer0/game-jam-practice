@@ -78,6 +78,9 @@ func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		if horizontal.is_zero_approx():
 			anim.speed_scale = 1
 			anim.play(&"idle")
+		elif velocity.length() < MAX_MOVE_SPEED * 0.2:
+			anim.speed_scale = (velocity.length() / MAX_MOVE_SPEED) * 3
+			anim.play(&"tiptoe")
 		elif velocity.length() < MAX_MOVE_SPEED * 0.7:
 			anim.speed_scale = (velocity.length() / MAX_MOVE_SPEED) * 3
 			anim.play(&"walk")
