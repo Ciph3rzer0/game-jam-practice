@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://8ksq3gfo330d"]
 
-[ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://minion_actor.tscn" id="1_blxge"]
-[ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://player_controller.gd" id="1_k6jok"]
+[ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://scenes/actors/minion/minion_actor.tscn" id="1_blxge"]
+[ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://scripts/player_controller.gd" id="1_k6jok"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_blxge"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
