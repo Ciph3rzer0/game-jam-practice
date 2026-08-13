@@ -10,7 +10,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		pass
 
 func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
-	var input_vector := Input.get_vector("pc_backward", "pc_forward", "pc_left", "pc_right", 0.2)
+	var input_vector := frame_input.move_vector
 	var move_vector := Vector3(input_vector.x, 0, input_vector.y)
 	
 	var move_accel : Vector3
