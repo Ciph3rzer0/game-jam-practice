@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://8ksq3gfo330d"]
 
 [ext_resource type="PackedScene" uid="uid://b5hvklm5vurpu" path="res://scenes/actors/mario/mario_actor.tscn" id="1_agfac"]
-[ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://scenes/actors/minion/minion_actor.tscn" id="1_blxge"]
 [ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://scripts/player_controller.gd" id="1_k6jok"]
+[ext_resource type="Script" uid="uid://dwdl8sdmg14kv" path="res://scenes/actors/abilities/double_jump.gd" id="3_0ucrb"]
 [ext_resource type="Script" uid="uid://o8kphqmulfgh" path="res://scenes/actors/abilities/jump.gd" id="3_wwmcr"]
 [ext_resource type="Script" uid="uid://b30jksbyr8sxr" path="res://scenes/ui/player_input_display.gd" id="4_d4y46"]
+[ext_resource type="Script" uid="uid://che0sm5mh0euc" path="res://scenes/ui/player_state_display.gd" id="6_0ucrb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_blxge"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -50,18 +51,11 @@ GRAVITY_ACCEL = 0.8
 script = ExtResource("1_k6jok")
 actor = NodePath("..")
 
+[node name="DoubleJump" type="Node3D" parent="Player" unique_id=1475046652]
+script = ExtResource("3_0ucrb")
+
 [node name="SingleJump" type="Node3D" parent="Player" unique_id=1773954802]
 script = ExtResource("3_wwmcr")
-
-[node name="DoubleJump" type="Node3D" parent="Player" unique_id=1475046652]
-
-[node name="Minion Actor" parent="." unique_id=863282779 instance=ExtResource("1_blxge")]
-visible = false
-
-[node name="PlayerController" type="Node3D" parent="Minion Actor" unique_id=1734974264 node_paths=PackedStringArray("actor")]
-visible = false
-script = ExtResource("1_k6jok")
-actor = NodePath("..")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=501066307]
 transform = Transform3D(-4.222196e-08, 0.25881904, -0.9659258, 1.131334e-08, 0.9659258, 0.25881904, 1, 0, -4.371139e-08, -3.5546312, 2.6690085, 0)
@@ -98,4 +92,35 @@ offset_bottom = 34.0
 text = "Crouch
 "
 
+[node name="PlayerStateDisplay" type="Panel" parent="CanvasLayer" unique_id=492712453]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -209.0
+offset_top = -82.0
+offset_right = 209.0
+offset_bottom = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("6_0ucrb")
+
+[node name="Grounded" type="CheckButton" parent="CanvasLayer/PlayerStateDisplay" unique_id=126652857]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 3.0
+offset_right = 184.0
+offset_bottom = 34.0
+text = "Grounded"
+
+[node name="Skidding" type="CheckButton" parent="CanvasLayer/PlayerStateDisplay" unique_id=2018116128]
+layout_mode = 0
+offset_left = 211.0
+offset_top = 3.0
+offset_right = 315.0
+offset_bottom = 34.0
+text = "Skidding"
+
+[connection signal="on_player_state_frame" from="Player" to="CanvasLayer/PlayerStateDisplay" method="_on_player_on_player_state_frame"]
 [connection signal="on_player_input_frame" from="Player/PlayerController" to="CanvasLayer/PlayerInputDisplay" method="_on_player_controller_on_player_input_frame"]

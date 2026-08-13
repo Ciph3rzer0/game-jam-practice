@@ -1,6 +1,8 @@
 class_name PlayerActor
 extends CharacterBody3D
 
+signal on_player_state_frame(frame_state: PlayerActor.State)
+
 @export var MAX_MOVE_SPEED := 8.0
 @export var ACCELERATION := 12.0
 @export var DRAG_ACCEL := 4.0
@@ -8,9 +10,11 @@ extends CharacterBody3D
 @export var GRAVITY_ACCEL := 2.0
 
 const PROGRESS_CHARS = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event:
-		pass
+
+func collect_state(frame_input: PlayerFrameInput, current_tick: int) -> State:
+	var state :=  State.capture(self, frame_input, current_tick)
+	on_player_state_frame.emit(state)
+	return state
 
 func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var state = State.capture(self, frame_input, delta)
@@ -51,6 +55,7 @@ func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	move_and_slide()
 
 class State extends RefCounted:
+	var frame_input: PlayerFrameInput
 	var is_on_floor: bool
 	var is_on_wall: bool
 	var is_on_ceiling: bool
@@ -61,6 +66,7 @@ class State extends RefCounted:
 
 	static func capture(player: PlayerActor, frame_input: PlayerFrameInput, current_tick: int) -> State:
 		var state = State.new()
+		state.frame_input = frame_input
 		state.is_on_floor = player.is_on_floor()
 		state.is_on_wall = player.is_on_wall()
 		state.is_on_ceiling = player.is_on_ceiling()

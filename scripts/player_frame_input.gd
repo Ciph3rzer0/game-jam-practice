@@ -1,4 +1,3 @@
-# player_frame_input.gd
 class_name PlayerFrameInput
 extends RefCounted
 
