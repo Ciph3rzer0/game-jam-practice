@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://8ksq3gfo330d"]
 
+[ext_resource type="PackedScene" uid="uid://b5hvklm5vurpu" path="res://player.tscn" id="1_agfac"]
 [ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://minion_actor.tscn" id="1_blxge"]
 [ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://player_controller.gd" id="1_k6jok"]
 
@@ -39,9 +40,20 @@ size = Vector3(20, 1, 20)
 [node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2071939189]
 shape = SubResource("ConcavePolygonShape3D_blxge")
 
-[node name="Minion Actor" parent="." unique_id=1583713615 instance=ExtResource("1_blxge")]
+[node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
+
+[node name="PlayerController" type="Node3D" parent="Player" unique_id=130017454 node_paths=PackedStringArray("actor")]
+script = ExtResource("1_k6jok")
+actor = NodePath("..")
+MAX_MOVE_SPEED = 8
+ACCELERATION = 12
+DRAG_ACCEL = 4
+
+[node name="Minion Actor" parent="." unique_id=863282779 instance=ExtResource("1_blxge")]
+visible = false
 
 [node name="PlayerController" type="Node3D" parent="Minion Actor" unique_id=1734974264 node_paths=PackedStringArray("actor")]
+visible = false
 script = ExtResource("1_k6jok")
 actor = NodePath("..")
 MAX_MOVE_SPEED = 8
