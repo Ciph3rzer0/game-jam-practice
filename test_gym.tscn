@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://8ksq3gfo330d"]
+
+[ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://minion_actor.tscn" id="1_blxge"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_blxge"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_k6jok"]
+sky_material = SubResource("ProceduralSkyMaterial_blxge")
+
+[sub_resource type="Environment" id="Environment_agfac"]
+background_mode = 2
+sky = SubResource("Sky_k6jok")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_blxge"]
+data = PackedVector3Array(-10, -0.5, 10, -10, -0.5, -10, -10, 0.5, -10, 10, -0.5, -10, -10, -0.5, -10, -10, -0.5, 10, -10, 0.5, -10, -10, -0.5, -10, 10, -0.5, -10, -10, 0.5, -10, -10, 0.5, 10, -10, -0.5, 10, -10, -0.5, 10, -10, 0.5, 10, 10, 0.5, 10, 10, 0.5, 10, -10, 0.5, 10, -10, 0.5, -10, -10, -0.5, 10, 10, -0.5, 10, 10, -0.5, -10, 10, 0.5, 10, 10, -0.5, 10, -10, -0.5, 10, 10, -0.5, -10, 10, -0.5, 10, 10, 0.5, 10, 10, -0.5, -10, 10, 0.5, -10, -10, 0.5, -10, -10, 0.5, -10, 10, 0.5, -10, 10, 0.5, 10, 10, 0.5, 10, 10, 0.5, -10, 10, -0.5, -10)
+
+[node name="TestGym" type="Node3D" unique_id=1514201132]
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=306784187]
+environment = SubResource("Environment_agfac")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=565220646]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1153532380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="FloorMeshCSG" type="CSGBox3D" parent="StaticBody3D" unique_id=285593833]
+size = Vector3(20, 1, 20)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2071939189]
+shape = SubResource("ConcavePolygonShape3D_blxge")
+
+[node name="Minion Actor" parent="." unique_id=1583713615 instance=ExtResource("1_blxge")]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=501066307]
+transform = Transform3D(-4.222196e-08, 0.25881904, -0.9659258, 1.131334e-08, 0.9659258, 0.25881904, 1, 0, -4.371139e-08, -3.5546312, 2.6690085, 0)

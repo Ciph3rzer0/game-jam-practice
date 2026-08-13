@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://ck20mmychrtqx"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qy3w5"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_byfbh"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qy3w5"]
+top_radius = 0.35
+bottom_radius = 0.4
+height = 0.5
+
+[node name="Minion Actor" type="CharacterBody3D" unique_id=1583713615]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1745043601]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_qy3w5")
+
+[node name="Capsule Body" type="MeshInstance3D" parent="." unique_id=403132398]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_byfbh")
+
+[node name="HeadPivot" type="Node3D" parent="." unique_id=1936569135]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 1.5, 0)
+
+[node name="GoggleMesh" type="MeshInstance3D" parent="HeadPivot" unique_id=1337120133]
+transform = Transform3D(-4.371139e-08, -1, 2.1855694e-08, 0, -4.371139e-08, -0.5, 1, -4.371139e-08, 9.553427e-16, 0.25, 0, 0)
+mesh = SubResource("CylinderMesh_qy3w5")
