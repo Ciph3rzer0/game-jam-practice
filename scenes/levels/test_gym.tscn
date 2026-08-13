@@ -44,8 +44,9 @@ size = Vector3(20, 1, 20)
 shape = SubResource("ConcavePolygonShape3D_blxge")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
-JUMP_VELOCITY = 12.0
+JUMP_VELOCITY = 10.0
 GRAVITY_ACCEL = 0.8
+JUMP_CHAIN_WINDOW = 0.5
 
 [node name="PlayerController" type="Node3D" parent="Player" unique_id=130017454 node_paths=PackedStringArray("actor")]
 script = ExtResource("1_k6jok")
@@ -121,6 +122,27 @@ offset_top = 3.0
 offset_right = 315.0
 offset_bottom = 34.0
 text = "Skidding"
+
+[node name="LastJump" type="Label" parent="CanvasLayer/PlayerStateDisplay" unique_id=746191414]
+layout_mode = 0
+offset_left = 328.0
+offset_top = 9.0
+offset_right = 368.0
+offset_bottom = 32.0
+
+[node name="TimeOnFloor" type="Label" parent="CanvasLayer/PlayerStateDisplay" unique_id=434807133]
+layout_mode = 0
+offset_left = 374.0
+offset_top = 8.0
+offset_right = 414.0
+offset_bottom = 31.0
+
+[node name="ConsecutiveJumps" type="Label" parent="CanvasLayer/PlayerStateDisplay" unique_id=570045768]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 7.0
+offset_right = 71.0
+offset_bottom = 30.0
 
 [connection signal="on_player_state_frame" from="Player" to="CanvasLayer/PlayerStateDisplay" method="_on_player_on_player_state_frame"]
 [connection signal="on_player_input_frame" from="Player/PlayerController" to="CanvasLayer/PlayerInputDisplay" method="_on_player_controller_on_player_input_frame"]

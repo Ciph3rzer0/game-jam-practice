@@ -8,16 +8,19 @@ signal on_player_state_frame(frame_state: PlayerActor.State)
 @export var DRAG_ACCEL := 4.0
 @export var JUMP_VELOCITY := 15.0
 @export var GRAVITY_ACCEL := 2.0
+@export var JUMP_CHAIN_WINDOW := 0.4
 
 const PROGRESS_CHARS = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
 
-func collect_state(frame_input: PlayerFrameInput, current_tick: int) -> State:
-	var state :=  State.capture(self, frame_input, current_tick)
-	on_player_state_frame.emit(state)
-	return state
+var current_state: PlayerActor.State = State.new()
+
+func collect_state(frame_input: PlayerFrameInput, delta: float) -> State:
+	current_state =  State.capture(self, current_state, frame_input, delta)
+	on_player_state_frame.emit(current_state)
+	return current_state
 
 func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
-	var state = State.capture(self, frame_input, delta)
+	#var state = State.capture(self, frame_input, delta)
 	var move_vector := Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y)
 	
 	# Calculate acceleration
@@ -33,7 +36,7 @@ func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	velocity += (move_accel) * delta
 	
 	var PREFIX = PROGRESS_CHARS[(Time.get_ticks_msec() / 100) % PROGRESS_CHARS.size()]
-	print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), MAX_MOVE_SPEED, move_accel.length()])
+	#print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), MAX_MOVE_SPEED, move_accel.length()])
 	
 	var horizontal := Vector3(velocity.x, 0, velocity.z)
 	if horizontal.length() > MAX_MOVE_SPEED:
@@ -64,8 +67,32 @@ class State extends RefCounted:
 	#var skid_direction: Vector2
 	var is_skidding: bool
 
-	static func capture(player: PlayerActor, frame_input: PlayerFrameInput, current_tick: int) -> State:
+	var last_jump: float
+	var time_on_floor: float
+	var consecutive_jumps: int
+
+	static func capture(player: PlayerActor, previous_state: PlayerActor.State, frame_input: PlayerFrameInput, delta: float) -> State:
 		var state = State.new()
+		
+		#region STATE CARRYOVER
+		# LAST JUMP
+		state.last_jump = previous_state.last_jump + delta
+		
+		# TIME ON FLOOR
+		if previous_state.is_on_floor:
+			state.time_on_floor += previous_state.time_on_floor + delta
+		else:
+			state.time_on_floor = 0
+		
+		# CONSECUTIVE JUMPS
+		if state.time_on_floor >= player.JUMP_CHAIN_WINDOW:
+			state.consecutive_jumps = 0
+		else:
+			state.consecutive_jumps = previous_state.consecutive_jumps
+		
+		#endregion ### END STATE CARRYOVER ###
+		
+		#region FRAME INPUT PROCESSING
 		state.frame_input = frame_input
 		state.is_on_floor = player.is_on_floor()
 		state.is_on_wall = player.is_on_wall()
@@ -77,14 +104,9 @@ class State extends RefCounted:
 		var dot_val = player_horizontal_velocity.normalized().dot(frame_input.move_vector.normalized())
 
 		if dot_val < -0.95:
-			print("Pointing in the opposite direction!")
+			#print("Pointing in the opposite direction!")
 			state.is_skidding = true
 		
-		#var input := PlayerFrameInput.new()
-		#input.move_vector = Input.get_vector("pc_backward", "pc_forward", "pc_left", "pc_right", 0.2)
-		#input.jump_pressed = Input.is_action_just_pressed("pc_jump")
-		#input.jump_held = Input.is_action_pressed("pc_jump")
-		#input.crouch_pressed = Input.is_action_just_pressed("pc_crouch")
-		#input.crouch_held = Input.is_action_pressed("pc_crouch")
-		#input.tick = current_tick
+		#endregion ### END FRAME INPUT PROCESSING ###
+		
 		return state
