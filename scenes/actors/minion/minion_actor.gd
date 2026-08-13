@@ -20,7 +20,7 @@ func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var move_accel : Vector3
 	if frame_input.move_vector.is_equal_approx(Vector2.ZERO):
 		# Drag Force
-		move_accel = -velocity * DRAG_ACCEL
+		move_accel = -velocity * (Vector3.ONE - Vector3.UP) * DRAG_ACCEL
 	else:
 		# Move Force
 		move_accel = move_vector * ACCELERATION
