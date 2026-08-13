@@ -26,7 +26,6 @@ func collect_state(frame_input: PlayerFrameInput, delta: float) -> State:
 
 func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var input_vector := frame_input.move_vector
-	var move_vector := Vector3(input_vector.x, 0, input_vector.y)
 	var move_vector := Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y)
 	
 	var zero_move_input = frame_input.move_vector.is_equal_approx(Vector2.ZERO)

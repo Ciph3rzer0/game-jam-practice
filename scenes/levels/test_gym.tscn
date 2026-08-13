@@ -56,6 +56,7 @@ actor = NodePath("..")
 
 [node name="TripleJump" type="Node3D" parent="Player" unique_id=930449821]
 script = ExtResource("3_pqs40")
+enabled = null
 
 [node name="DoubleJump" type="Node3D" parent="Player" unique_id=1475046652]
 script = ExtResource("3_0ucrb")

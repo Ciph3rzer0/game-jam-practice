@@ -2,14 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://scenes/actors/minion/minion_actor.tscn" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://bhcbdqvhuio63" path="res://assets/mario.glb" id="2_i3pqv"]
-[ext_resource type="Script" uid="uid://ofshi8ghlhxq" path="res://scripts/anim-test.gd" id="2_tw7wn"]
-[ext_resource type="Script" path="res://scripts/orbit_camera.gd" id="3_orbit_camera"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_onrkg"]
 radius = 0.207
 
 [node name="Minion Actor" unique_id=1583713615 instance=ExtResource("1_onrkg")]
-script = ExtResource("2_tw7wn")
 MAX_MOVE_SPEED = 10
 ACCELERATION = 30
 DRAG_ACCEL = 6
@@ -38,8 +35,4 @@ visible = false
 [node name="GoggleMesh" parent="HeadPivot" index="0" unique_id=1337120133]
 visible = false
 
-[node name="Camera3D" type="Camera3D" parent="." index="4" unique_id=1497954131]
-transform = Transform3D(1, 0, 0, 0, 0.92748666, 0.37385628, 0, -0.37385628, 0.92748666, 0, 3.1072648, 3.189031)
-script = ExtResource("3_orbit_camera")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5" unique_id=1416362984]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4" unique_id=1416362984]

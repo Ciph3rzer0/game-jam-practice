@@ -18,7 +18,7 @@ var tick: int
 
 static func capture(current_tick: int) -> PlayerFrameInput:
 	var input := PlayerFrameInput.new()
-	input.move_vector = Input.get_vector("pc_left", "pc_right", "pc_forward", "pc_backward", 0.2)
+	input.move_vector = Input.get_vector("pc_backward", "pc_forward", "pc_left", "pc_right", 0.2)
 	input.jump_pressed = Input.is_action_just_pressed("pc_jump")
 	input.jump_held = Input.is_action_pressed("pc_jump")
 	input.crouch_pressed = Input.is_action_just_pressed("pc_crouch")
