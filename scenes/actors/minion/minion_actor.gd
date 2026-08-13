@@ -12,7 +12,12 @@ signal on_player_state_frame(frame_state: PlayerActor.State)
 
 const PROGRESS_CHARS = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
 
+@onready var anim: AnimationPlayer = get_node("mario/AnimationPlayer") as AnimationPlayer
+
 var current_state: PlayerActor.State = State.new()
+
+func _ready() -> void:
+	assert(anim != null)
 
 func collect_state(frame_input: PlayerFrameInput, delta: float) -> State:
 	current_state =  State.capture(self, current_state, frame_input, delta)
@@ -20,12 +25,13 @@ func collect_state(frame_input: PlayerFrameInput, delta: float) -> State:
 	return current_state
 
 func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
-	#var state = State.capture(self, frame_input, delta)
 	var move_vector := Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y)
+	
+	var zero_move_input = frame_input.move_vector.is_equal_approx(Vector2.ZERO)
 	
 	# Calculate acceleration
 	var move_accel : Vector3
-	if frame_input.move_vector.is_equal_approx(Vector2.ZERO):
+	if zero_move_input:
 		# Drag Force
 		move_accel = -velocity * (Vector3.ONE - Vector3.UP) * DRAG_ACCEL
 	else:
@@ -43,6 +49,9 @@ func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		horizontal = horizontal.normalized() * MAX_MOVE_SPEED
 		velocity.x = horizontal.x
 		velocity.z = horizontal.z
+	elif zero_move_input and horizontal.length() < 6.0 / 60:
+		velocity.x = 0
+		velocity.z = 0
 	
 	# Look at direction
 	var look_at_target = velocity
@@ -52,8 +61,26 @@ func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	if !global_position.is_equal_approx(look_at_target):
 		look_at(look_at_target, Vector3.UP)
 	
+	var gravity_to_apply := 0.0
+	
+	if velocity.y < 0:
+		gravity_to_apply += GRAVITY_ACCEL
+	else:
+		gravity_to_apply += GRAVITY_ACCEL * 1.5
+	
 	# Apply Gravity
-	velocity.y -= GRAVITY_ACCEL
+	if frame_input.jump_held:
+		gravity_to_apply -= GRAVITY_ACCEL * 0.5
+	
+	velocity.y -= gravity_to_apply
+	
+	if is_on_floor():
+		if horizontal.is_zero_approx():
+			anim.speed_scale = 1
+			anim.play(&"idle")
+		else:
+			anim.speed_scale = (velocity.length() / MAX_MOVE_SPEED) * 3
+			anim.play(&"walk")
 	
 	move_and_slide()
 

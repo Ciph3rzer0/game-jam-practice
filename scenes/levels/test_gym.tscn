@@ -44,8 +44,9 @@ size = Vector3(20, 1, 20)
 shape = SubResource("ConcavePolygonShape3D_blxge")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
+ACCELERATION = 10.0
 JUMP_VELOCITY = 10.0
-GRAVITY_ACCEL = 0.8
+GRAVITY_ACCEL = 0.5
 JUMP_CHAIN_WINDOW = 0.5
 
 [node name="PlayerController" type="Node3D" parent="Player" unique_id=130017454 node_paths=PackedStringArray("actor")]
