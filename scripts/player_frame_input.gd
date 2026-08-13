@@ -5,6 +5,8 @@ extends RefCounted
 var move_vector: Vector2
 var jump_pressed: bool
 var jump_held: bool
+var crouch_pressed: bool
+var crouch_held: bool
 var tick: int
 
 static func capture(current_tick: int) -> PlayerFrameInput:
@@ -12,5 +14,7 @@ static func capture(current_tick: int) -> PlayerFrameInput:
 	input.move_vector = Input.get_vector("pc_backward", "pc_forward", "pc_left", "pc_right", 0.2)
 	input.jump_pressed = Input.is_action_just_pressed("pc_jump")
 	input.jump_held = Input.is_action_pressed("pc_jump")
+	input.crouch_pressed = Input.is_action_just_pressed("pc_crouch")
+	input.crouch_held = Input.is_action_pressed("pc_crouch")
 	input.tick = current_tick
 	return input
