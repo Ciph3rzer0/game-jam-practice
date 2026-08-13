@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b5hvklm5vurpu"]
 
-[ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://minion_actor.tscn" id="1_onrkg"]
-[ext_resource type="PackedScene" uid="uid://bhcbdqvhuio63" path="res://mario.glb" id="2_i3pqv"]
+[ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://scenes/actors/minion/minion_actor.tscn" id="1_onrkg"]
+[ext_resource type="PackedScene" uid="uid://bhcbdqvhuio63" path="res://assets/mario.glb" id="2_i3pqv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_onrkg"]
 radius = 0.207

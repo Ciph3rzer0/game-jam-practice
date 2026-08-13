@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bhcbdqvhuio63"
-path="res://.godot/imported/mario.glb-c67d26606f5c1ae6c5e2006a149ba37f.scn"
+path="res://.godot/imported/mario.glb-a40fbf9f6f96af717b8b6ba98a399066.scn"
 
 [deps]
 
-source_file="res://mario.glb"
-dest_files=["res://.godot/imported/mario.glb-c67d26606f5c1ae6c5e2006a149ba37f.scn"]
+source_file="res://assets/mario.glb"
+dest_files=["res://.godot/imported/mario.glb-a40fbf9f6f96af717b8b6ba98a399066.scn"]
 
 [params]
 
