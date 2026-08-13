@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://8ksq3gfo330d"]
 
 [ext_resource type="PackedScene" uid="uid://b5hvklm5vurpu" path="res://player.tscn" id="1_agfac"]
-[ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://minion_actor.tscn" id="1_blxge"]
-[ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://player_controller.gd" id="1_k6jok"]
+[ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://scenes/actors/minion/minion_actor.tscn" id="1_blxge"]
+[ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://scripts/player_controller.gd" id="1_k6jok"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_blxge"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -45,9 +45,6 @@ shape = SubResource("ConcavePolygonShape3D_blxge")
 [node name="PlayerController" type="Node3D" parent="Player" unique_id=130017454 node_paths=PackedStringArray("actor")]
 script = ExtResource("1_k6jok")
 actor = NodePath("..")
-MAX_MOVE_SPEED = 8
-ACCELERATION = 12
-DRAG_ACCEL = 4
 
 [node name="Minion Actor" parent="." unique_id=863282779 instance=ExtResource("1_blxge")]
 visible = false
@@ -56,9 +53,10 @@ visible = false
 visible = false
 script = ExtResource("1_k6jok")
 actor = NodePath("..")
-MAX_MOVE_SPEED = 8
-ACCELERATION = 12
-DRAG_ACCEL = 4
+
+[node name="SingleJump" type="Node3D" parent="Minion Actor" unique_id=1773954802]
+
+[node name="DoubleJump" type="Node3D" parent="Minion Actor" unique_id=1475046652]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=501066307]
 transform = Transform3D(-4.222196e-08, 0.25881904, -0.9659258, 1.131334e-08, 0.9659258, 0.25881904, 1, 0, -4.371139e-08, -3.5546312, 2.6690085, 0)
