@@ -2,10 +2,18 @@ class_name PlayerFrameInput
 extends RefCounted
 
 var move_vector: Vector2
+
 var jump_pressed: bool
+var jump_pressed_consumed: bool
+
 var jump_held: bool
+var jump_held_consumed: bool
+
 var crouch_pressed: bool
+var crouch_pressed_consumed: bool
+
 var crouch_held: bool
+var crouch_held_consumed: bool
 var tick: int
 
 static func capture(current_tick: int) -> PlayerFrameInput:
@@ -17,3 +25,35 @@ static func capture(current_tick: int) -> PlayerFrameInput:
 	input.crouch_held = Input.is_action_pressed("pc_crouch")
 	input.tick = current_tick
 	return input
+
+func consume_jump_press() -> bool:
+	if jump_pressed_consumed:
+		return false
+	
+	jump_pressed_consumed = true
+	
+	return jump_pressed
+
+func consume_jump_held() -> bool:
+	if jump_held_consumed:
+		return false
+	
+	jump_held_consumed = true
+	
+	return jump_held
+
+func consume_crouch_press() -> bool:
+	if crouch_pressed_consumed:
+		return false
+	
+	crouch_pressed_consumed = true
+	
+	return crouch_pressed
+
+func consume_crouch_held() -> bool:
+	if crouch_held_consumed:
+		return false
+	
+	crouch_held_consumed = true
+	
+	return crouch_held
