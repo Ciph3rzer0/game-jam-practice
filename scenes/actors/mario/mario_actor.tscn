@@ -26,6 +26,7 @@ ANIMATION_BLEND_TIME = 0.12
 shape = SubResource("CapsuleShape3D_onrkg")
 
 [node name="mario" parent="." index="1" unique_id=1967723681 instance=ExtResource("2_i3pqv")]
+unique_name_in_owner = true
 transform = Transform3D(-0.8632414, 0, -7.546696e-08, 0, 0.8632414, 0, 7.546696e-08, 0, -0.8632414, -0.0023355484, 0.015335746, -0.00014910102)
 
 [node name="Capsule Body" parent="." index="2" unique_id=403132398]
