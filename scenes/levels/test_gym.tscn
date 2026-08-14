@@ -115,6 +115,8 @@ script = ExtResource("3_wwmcr")
 [node name="LakituCamera" parent="." unique_id=902191612 node_paths=PackedStringArray("camera_target") instance=ExtResource("7_x758c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3520052, 0)
 camera_target = NodePath("../Player")
+CAMERA_SPEED = 3.0
+ORBIT_SPEED = 0.7
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1972452837]
 
@@ -133,20 +135,27 @@ script = ExtResource("4_d4y46")
 
 [node name="Jump" type="CheckButton" parent="CanvasLayer/PlayerInputDisplay" unique_id=385365975]
 layout_mode = 0
-offset_left = 95.0
-offset_top = 3.0
-offset_right = 184.0
-offset_bottom = 34.0
+offset_left = 47.0
+offset_top = 4.0
+offset_right = 136.0
+offset_bottom = 35.0
 text = "Jump"
 
 [node name="Crouch" type="CheckButton" parent="CanvasLayer/PlayerInputDisplay" unique_id=1244872672]
 layout_mode = 0
-offset_left = 211.0
-offset_top = 3.0
-offset_right = 315.0
-offset_bottom = 34.0
-text = "Crouch
-"
+offset_left = 263.0
+offset_top = 4.0
+offset_right = 367.0
+offset_bottom = 35.0
+text = "Crouch"
+
+[node name="Action" type="CheckButton" parent="CanvasLayer/PlayerInputDisplay" unique_id=881499460]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 4.0
+offset_right = 254.0
+offset_bottom = 35.0
+text = "Action"
 
 [node name="PlayerStateDisplay" type="Panel" parent="CanvasLayer" unique_id=492712453]
 anchors_preset = 7
@@ -164,18 +173,18 @@ script = ExtResource("6_0ucrb")
 
 [node name="Grounded" type="CheckButton" parent="CanvasLayer/PlayerStateDisplay" unique_id=126652857]
 layout_mode = 0
-offset_left = 95.0
-offset_top = 3.0
-offset_right = 184.0
-offset_bottom = 34.0
+offset_left = 63.0
+offset_top = 9.0
+offset_right = 189.0
+offset_bottom = 40.0
 text = "Grounded"
 
 [node name="Skidding" type="CheckButton" parent="CanvasLayer/PlayerStateDisplay" unique_id=2018116128]
 layout_mode = 0
-offset_left = 211.0
-offset_top = 3.0
-offset_right = 315.0
-offset_bottom = 34.0
+offset_left = 205.0
+offset_top = 5.0
+offset_right = 319.0
+offset_bottom = 36.0
 text = "Skidding"
 
 [node name="LastJump" type="Label" parent="CanvasLayer/PlayerStateDisplay" unique_id=746191414]
