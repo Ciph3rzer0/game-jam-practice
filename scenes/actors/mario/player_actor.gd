@@ -122,10 +122,26 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	velocity.y -= gravity_to_apply
 	#endregion
 	
+	move_and_slide()
+
+func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
+	var horizontal = velocity * VEC3_XZ
+	
+		#region Calculate Max Speed
+	var CURRENT_MAX_SPEED: float
+	
 	if current_state.is_crawling:
+		CURRENT_MAX_SPEED = MAX_MOVE_SPEED / 4.0
+	else:
+		CURRENT_MAX_SPEED = MAX_MOVE_SPEED
+	#endregion
+	
+	if current_state.is_crawling:
+		print("crawling")
 		anim.speed_scale = 1
 		anim.play(&"crawling")
 	elif current_state.is_skidding:
+		print("skidding")
 		anim.speed_scale = 1
 		anim.play(&"quick-turn")
 	elif is_on_floor():
@@ -142,10 +158,6 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 			anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 0.9
 			anim.play(&"run")
 	
-	move_and_slide()
-
-func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
-	pass
 
 class State extends RefCounted:
 	var frame_input: PlayerFrameInput
@@ -200,10 +212,11 @@ class State extends RefCounted:
 		# Normalize to get pure directions
 		var dot_val = player_horizontal_velocity.normalized().dot(frame_input.move_vector.normalized())
 		
-		if dot_val < SKIDDING_ANGLE:
+		if state.is_on_floor and dot_val < SKIDDING_ANGLE:
 			state.is_skidding = true
 		
-		if frame_input.crouch_held:
+		print(state.is_on_floor and frame_input.crouch_held)
+		if state.is_on_floor and frame_input.crouch_held:
 			state.is_crawling = true
 		#endregion ### END FRAME INPUT PROCESSING ###
 		

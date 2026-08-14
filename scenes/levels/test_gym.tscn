@@ -116,7 +116,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3520052, 0)
 camera_target = NodePath("../Player")
 CAMERA_HEIGHT = 2.21
 CAMERA_SPEED = 3.0
-ORBIT_SPEED = 0.0
+ORBIT_SPEED = 0.56
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1972452837]
 
