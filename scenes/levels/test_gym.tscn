@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b5hvklm5vurpu" path="res://scenes/actors/mario/mario_actor.tscn" id="1_agfac"]
 [ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://scripts/player_controller.gd" id="1_k6jok"]
 [ext_resource type="Script" uid="uid://dwdl8sdmg14kv" path="res://scenes/actors/abilities/double_jump.gd" id="3_0ucrb"]
+[ext_resource type="Script" uid="uid://376srki7x84l" path="res://scenes/actors/abilities/wall_jump.gd" id="3_at6uk"]
 [ext_resource type="Script" uid="uid://dy1lh7prcvheb" path="res://scenes/actors/abilities/triple_jump.gd" id="3_pqs40"]
 [ext_resource type="Script" uid="uid://o8kphqmulfgh" path="res://scenes/actors/abilities/jump.gd" id="3_wwmcr"]
 [ext_resource type="Script" uid="uid://b30jksbyr8sxr" path="res://scenes/ui/player_input_display.gd" id="4_d4y46"]
@@ -21,6 +22,9 @@ sky = SubResource("Sky_k6jok")
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_0ucrb"]
 data = PackedVector3Array(-25, -0.5, 25, -25, -0.5, -25, -25, 0.5, -25, 25, -0.5, -25, -25, -0.5, -25, -25, -0.5, 25, -25, 0.5, -25, -25, -0.5, -25, 25, -0.5, -25, -25, 0.5, -25, -25, 0.5, 25, -25, -0.5, 25, -25, -0.5, 25, -25, 0.5, 25, 25, 0.5, 25, 25, 0.5, 25, -25, 0.5, 25, -25, 0.5, -25, -25, -0.5, 25, 25, -0.5, 25, 25, -0.5, -25, 25, 0.5, 25, 25, -0.5, 25, -25, -0.5, 25, 25, -0.5, -25, 25, -0.5, 25, 25, 0.5, 25, 25, -0.5, -25, 25, 0.5, -25, -25, 0.5, -25, -25, 0.5, -25, 25, 0.5, -25, 25, 0.5, 25, 25, 0.5, 25, 25, 0.5, -25, 25, -0.5, -25)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_at6uk"]
+data = PackedVector3Array(-2.5, -2.5, 0.5, -2.5, -2.5, -0.5, -2.5, 2.5, -0.5, 2.5, -2.5, -0.5, -2.5, -2.5, -0.5, -2.5, -2.5, 0.5, -2.5, 2.5, -0.5, -2.5, -2.5, -0.5, 2.5, -2.5, -0.5, -2.5, 2.5, -0.5, -2.5, 2.5, 0.5, -2.5, -2.5, 0.5, -2.5, -2.5, 0.5, -2.5, 2.5, 0.5, 2.5, 2.5, 0.5, 2.5, 2.5, 0.5, -2.5, 2.5, 0.5, -2.5, 2.5, -0.5, -2.5, -2.5, 0.5, 2.5, -2.5, 0.5, 2.5, -2.5, -0.5, 2.5, 2.5, 0.5, 2.5, -2.5, 0.5, -2.5, -2.5, 0.5, 2.5, -2.5, -0.5, 2.5, -2.5, 0.5, 2.5, 2.5, 0.5, 2.5, -2.5, -0.5, 2.5, 2.5, -0.5, -2.5, 2.5, -0.5, -2.5, 2.5, -0.5, 2.5, 2.5, -0.5, 2.5, 2.5, 0.5, 2.5, 2.5, 0.5, 2.5, 2.5, -0.5, 2.5, -2.5, -0.5)
 
 [node name="TestGym" type="Node3D" unique_id=1514201132]
 metadata/_edit_lock_ = true
@@ -44,9 +48,21 @@ size = Vector3(50, 1, 50)
 [node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1390448255]
 shape = SubResource("ConcavePolygonShape3D_0ucrb")
 
+[node name="Wall" type="StaticBody3D" parent="." unique_id=1139278750]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2.5, -6)
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="WallMeshCSG" type="CSGBox3D" parent="Wall" unique_id=1263230908]
+size = Vector3(5, 5, 1)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="Wall" unique_id=1394141833]
+shape = SubResource("ConcavePolygonShape3D_at6uk")
+
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
+MAX_MOVE_SPEED = 8.0
 ACCELERATION = 10.0
-JUMP_VELOCITY = 10.0
+DRAG_ACCEL = 4.0
 GRAVITY_ACCEL = 0.5
 JUMP_CHAIN_WINDOW = 0.5
 
@@ -54,9 +70,11 @@ JUMP_CHAIN_WINDOW = 0.5
 script = ExtResource("1_k6jok")
 actor = NodePath("..")
 
+[node name="WallJump" type="Node3D" parent="Player" unique_id=1198430131]
+script = ExtResource("3_at6uk")
+
 [node name="TripleJump" type="Node3D" parent="Player" unique_id=930449821]
 script = ExtResource("3_pqs40")
-enabled = null
 
 [node name="DoubleJump" type="Node3D" parent="Player" unique_id=1475046652]
 script = ExtResource("3_0ucrb")

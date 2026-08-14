@@ -24,7 +24,7 @@ func collect_state(frame_input: PlayerFrameInput, delta: float) -> State:
 	on_player_state_frame.emit(current_state)
 	return current_state
 
-func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
+func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var input_vector := frame_input.move_vector
 	var move_vector := Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y)
 	
@@ -90,6 +90,9 @@ func apply_input(frame_input: PlayerFrameInput, delta: float) -> void:
 			anim.play(&"run")
 	
 	move_and_slide()
+
+func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
+	pass
 
 class State extends RefCounted:
 	var frame_input: PlayerFrameInput
