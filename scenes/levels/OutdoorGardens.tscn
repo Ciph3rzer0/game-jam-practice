@@ -30,11 +30,11 @@ albedo_color = Color(2.4065375e-06, 0.7396069, 0.015260721, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_7vrny"]
 size = Vector3(2, 0.1, 2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7vrny"]
-albedo_color = Color(0, 0.51339334, 0.86931634, 1)
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lmvdk"]
 albedo_color = Color(0.5892388, 0.230127, 0.10993605, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7vrny"]
+albedo_color = Color(0, 0.51339334, 0.86931634, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kill_floor"]
 size = Vector3(200, 4, 200)
@@ -93,60 +93,62 @@ transform = Transform3D(1.3829924e-15, -7.902264e-09, 1.0920683, -0.65655386, -7
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_0o143")
 
-[node name="water" type="MeshInstance3D" parent="Environment" unique_id=853038286]
-transform = Transform3D(118.29418, 0, 0, 0, 15.559132, 0, 0, 0, 113.91602, 3.404911, -12.227516, -36.33802)
-mesh = SubResource("PlaneMesh_h45xw")
-surface_material_override/0 = SubResource("StandardMaterial3D_7vrny")
+[node name="mountain range" type="Node3D" parent="Environment" unique_id=1547854036]
 
-[node name="mountains" type="MeshInstance3D" parent="Environment" unique_id=1437222718]
+[node name="mountains" type="MeshInstance3D" parent="Environment/mountain range" unique_id=1437222718]
 transform = Transform3D(158.74306, 9.1266486e-07, 152.86786, 158.74309, -9.126648e-07, -152.86787, 0, 29.527842, -9.44987e-06, 0.8799282, -33.762794, -598.5086)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
 
-[node name="mountains5" type="MeshInstance3D" parent="Environment" unique_id=1017583690]
+[node name="mountains5" type="MeshInstance3D" parent="Environment/mountain range" unique_id=1017583690]
 transform = Transform3D(114.68436, 6.593572e-07, 110.439804, 114.68437, -6.5935717e-07, -110.43981, 0, 21.33247, -6.827084e-06, -229.69966, -165.7006, -421.6062)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
 
-[node name="mountains6" type="MeshInstance3D" parent="Environment" unique_id=1467643482]
+[node name="mountains6" type="MeshInstance3D" parent="Environment/mountain range" unique_id=1467643482]
 transform = Transform3D(110.32302, 5.8270035, 106.23988, 114.68437, -6.593572e-07, -110.43981, -31.326244, 20.521217, -30.166843, -447.43378, -101.574104, -376.90472)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
 
-[node name="mountains7" type="MeshInstance3D" parent="Environment" unique_id=1698418149]
+[node name="mountains7" type="MeshInstance3D" parent="Environment/mountain range" unique_id=1698418149]
 transform = Transform3D(64.23705, 3.3928506, 61.85959, 66.776505, -3.839195e-07, -64.30505, -18.240124, 11.948752, -17.565048, -514.2478, 50.68728, -799.3977)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
 
-[node name="mountains8" type="MeshInstance3D" parent="Environment" unique_id=1591360294]
+[node name="mountains8" type="MeshInstance3D" parent="Environment/mountain range" unique_id=1591360294]
 transform = Transform3D(89.14273, 5.1235223, 79.35733, 104.153885, -0.08278469, -78.94118, -35.28584, 12.699214, -32.531487, -396.04565, 31.368362, -683.3273)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
 
-[node name="mountains10" type="MeshInstance3D" parent="Environment" unique_id=1553179314]
+[node name="mountains10" type="MeshInstance3D" parent="Environment/mountain range" unique_id=1553179314]
 transform = Transform3D(122.219864, 7.0246468, 108.80351, 142.80103, -0.11350262, -108.23294, -48.378937, 17.41136, -44.60256, -318.80728, 8.568148, -808.4139)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
 
-[node name="mountains9" type="MeshInstance3D" parent="Environment" unique_id=1380478289]
+[node name="mountains9" type="MeshInstance3D" parent="Environment/mountain range" unique_id=1380478289]
 transform = Transform3D(122.219864, 7.0246468, 108.80351, 142.80103, -0.11350262, -108.23294, -48.378937, 17.41136, -44.60256, 175.75761, 51.10769, -808.4139)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
 
-[node name="mountains2" type="MeshInstance3D" parent="Environment" unique_id=1193519982]
+[node name="mountains2" type="MeshInstance3D" parent="Environment/mountain range" unique_id=1193519982]
 transform = Transform3D(111.773315, -4.7758837, 107.63652, 114.68436, -6.120405e-07, -110.439804, 25.675379, 20.79099, 24.725107, 250.89267, 5.3959374, -454.43008)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
 
-[node name="mountains3" type="MeshInstance3D" parent="Environment" unique_id=276026009]
+[node name="mountains3" type="MeshInstance3D" parent="Environment/mountain range" unique_id=276026009]
 transform = Transform3D(76.13576, 1.087231, 73.31795, 76.359795, 1.0178705e-07, -73.53365, -5.8450046, 14.162034, -5.6286845, 408.8621, 5.3959346, -404.82275)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
 
-[node name="mountains4" type="MeshInstance3D" parent="Environment" unique_id=539438967]
+[node name="mountains4" type="MeshInstance3D" parent="Environment/mountain range" unique_id=539438967]
 transform = Transform3D(81.40414, -16.086668, 78.39132, 118.76822, -6.828365e-07, -114.37253, 86.48268, 15.142006, 83.28189, 752.7426, -5.5408936, -630.89075)
 mesh = SubResource("PlaneMesh_h45xw")
 surface_material_override/0 = SubResource("StandardMaterial3D_lmvdk")
+
+[node name="water" type="MeshInstance3D" parent="Environment" unique_id=853038286]
+transform = Transform3D(118.29418, 0, 0, 0, 15.559132, 0, 0, 0, 113.91602, 3.404911, -12.227516, -36.33802)
+mesh = SubResource("PlaneMesh_h45xw")
+surface_material_override/0 = SubResource("StandardMaterial3D_7vrny")
 
 [node name="Trees" type="Node3D" parent="." unique_id=1052177369]
 transform = Transform3D(3.7918396, 0, 0, 0, 3.7918396, 0, 0, 0, 3.7918396, 0, 0, 0)
@@ -230,6 +232,9 @@ texture = ExtResource("1_do7fj")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("2_4or6s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.033965982, -0.009158492, 0.33276653)
+
+[node name="Camera3D" type="Camera3D" parent="Player" unique_id=422801795]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.289812, 3.159968)
 
 [node name="PlayerSpawn" type="Marker3D" parent="." unique_id=1913684468]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.033965982, -0.009158492, 0.33276653)
