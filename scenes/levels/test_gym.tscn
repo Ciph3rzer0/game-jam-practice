@@ -90,7 +90,7 @@ size = Vector3(5, 5, 1)
 shape = SubResource("ConcavePolygonShape3D_at6uk")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
-ACCELERATION = 10.0
+ACCELERATION = 1000.0
 GRAVITY_ACCEL = 0.5
 JUMP_CHAIN_WINDOW = 0.5
 
@@ -113,8 +113,9 @@ script = ExtResource("3_wwmcr")
 [node name="LakituCamera" parent="." unique_id=902191612 node_paths=PackedStringArray("camera_target") instance=ExtResource("7_x758c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3520052, 0)
 camera_target = NodePath("../Player")
+CAMERA_HEIGHT = 2.21
 CAMERA_SPEED = 3.0
-ORBIT_SPEED = 0.7
+ORBIT_SPEED = 0.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1972452837]
 

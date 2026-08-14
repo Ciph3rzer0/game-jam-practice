@@ -73,6 +73,11 @@ pc_action={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Terrain"
+3d_physics/layer_5="Player"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
