@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://bkxlxv6itygxv"]
+
+[ext_resource type="Script" uid="uid://db5ww4a3b1aig" path="res://scenes/camera/lakitu_camera.gd" id="1_wqoce"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_x758c"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_x758c"]
+radius = 0.27
+height = 0.29
+
+[sub_resource type="SphereMesh" id="SphereMesh_8e4yp"]
+radius = 0.25
+
+[sub_resource type="BoxMesh" id="BoxMesh_x758c"]
+size = Vector3(0.2, 2, 0.2)
+
+[sub_resource type="SphereMesh" id="SphereMesh_uhg71"]
+
+[node name="LakituCamera" type="Node3D" unique_id=902191612]
+script = ExtResource("1_wqoce")
+
+[node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=183062279]
+shape = SubResource("SphereShape3D_x758c")
+spring_length = 6.0
+
+[node name="LakituCam" type="Camera3D" parent="SpringArm3D" unique_id=689445914]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+cull_mask = 262143
+
+[node name="LakituPlaceholder" type="Node3D" parent="SpringArm3D/LakituCam" unique_id=810541226]
+
+[node name="LakituCloud" type="MeshInstance3D" parent="SpringArm3D/LakituCam/LakituPlaceholder" unique_id=1022779127]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17681551, 0, 0.21068382)
+layers = 524288
+mesh = SubResource("SphereMesh_x758c")
+
+[node name="LakituCloud2" type="MeshInstance3D" parent="SpringArm3D/LakituCam/LakituPlaceholder" unique_id=533651079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2501669, 0.31346464, -0.16969442)
+layers = 524288
+mesh = SubResource("SphereMesh_x758c")
+
+[node name="LakituCloud3" type="MeshInstance3D" parent="SpringArm3D/LakituCam/LakituPlaceholder" unique_id=545283915]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10414529, -0.24366903, 0.02464819)
+layers = 524288
+mesh = SubResource("SphereMesh_x758c")
+
+[node name="LakituCloud4" type="MeshInstance3D" parent="SpringArm3D/LakituCam/LakituPlaceholder" unique_id=1263325576]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2832725, 0.047377586, -0.15895844)
+layers = 524288
+mesh = SubResource("SphereMesh_x758c")
+
+[node name="LakituCloud5" type="MeshInstance3D" parent="SpringArm3D/LakituCam/LakituPlaceholder" unique_id=1614517662]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14552903, 0.25023484, 0.18442774)
+layers = 524288
+mesh = SubResource("SphereMesh_x758c")
+
+[node name="LakituCloud7" type="MeshInstance3D" parent="SpringArm3D/LakituCam/LakituPlaceholder" unique_id=1716819701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14552903, 0.25023484, 0.18442774)
+layers = 524288
+mesh = SubResource("SphereMesh_x758c")
+
+[node name="LakituCloud6" type="MeshInstance3D" parent="SpringArm3D/LakituCam/LakituPlaceholder" unique_id=920720986]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.715, 0)
+layers = 524288
+mesh = SubResource("SphereMesh_8e4yp")
+
+[node name="CameraTargetVerticalBox" type="MeshInstance3D" parent="SpringArm3D/LakituCam/LakituPlaceholder" unique_id=1034813259]
+transform = Transform3D(1, 0, 0, 0, 0.6465859, 0.7628412, 0, -0.7628412, 0.6465859, 0, 0.92667866, -1.0932944)
+layers = 524288
+mesh = SubResource("BoxMesh_x758c")
+
+[node name="CameraTargetVisualization" type="MeshInstance3D" parent="." unique_id=1097782874]
+visible = false
+mesh = SubResource("SphereMesh_uhg71")
+
+[node name="CameraTargetVerticalBox" type="MeshInstance3D" parent="CameraTargetVisualization" unique_id=1655162698]
+mesh = SubResource("BoxMesh_x758c")

@@ -25,9 +25,13 @@ func collect_state(frame_input: PlayerFrameInput, delta: float) -> State:
 	return current_state
 
 func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
-	var input_vector := frame_input.move_vector
 	var move_vector := Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y)
 	
+	# Translate movement based on camera view
+	var camera = get_viewport().get_camera_3d()
+	move_vector = move_vector.rotated(Vector3.UP, camera.global_rotation.y)
+	
+	# Is the player not holding any direction?
 	var zero_move_input = frame_input.move_vector.is_equal_approx(Vector2.ZERO)
 	
 	# Calculate acceleration

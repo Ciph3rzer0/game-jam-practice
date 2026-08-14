@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://o8kphqmulfgh" path="res://scenes/actors/abilities/jump.gd" id="3_wwmcr"]
 [ext_resource type="Script" uid="uid://b30jksbyr8sxr" path="res://scenes/ui/player_input_display.gd" id="4_d4y46"]
 [ext_resource type="Script" uid="uid://che0sm5mh0euc" path="res://scenes/ui/player_state_display.gd" id="6_0ucrb"]
+[ext_resource type="PackedScene" uid="uid://bkxlxv6itygxv" path="res://scenes/camera/lakitu_camera.tscn" id="7_x758c"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_blxge"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -28,7 +29,6 @@ data = PackedVector3Array(-2.5, -2.5, 0.5, -2.5, -2.5, -0.5, -2.5, 2.5, -0.5, 2.
 
 [node name="TestGym" type="Node3D" unique_id=1514201132]
 metadata/_edit_lock_ = true
-metadata/_edit_group_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=306784187]
 environment = SubResource("Environment_agfac")
@@ -90,7 +90,6 @@ size = Vector3(5, 5, 1)
 shape = SubResource("ConcavePolygonShape3D_at6uk")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
-floor_max_angle = 0.7853982
 MAX_MOVE_SPEED = 8.0
 ACCELERATION = 10.0
 DRAG_ACCEL = 4.0
@@ -113,8 +112,9 @@ script = ExtResource("3_0ucrb")
 [node name="SingleJump" type="Node3D" parent="Player" unique_id=1773954802]
 script = ExtResource("3_wwmcr")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=501066307]
-transform = Transform3D(-4.222196e-08, 0.25881907, -0.9659258, 1.131334e-08, 0.9659259, 0.25881907, 1, 8.881784e-16, -4.371139e-08, -3.5546312, 5.4938717, 0)
+[node name="LakituCamera" parent="." unique_id=902191612 node_paths=PackedStringArray("camera_target") instance=ExtResource("7_x758c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3520052, 0)
+camera_target = NodePath("../Player")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1972452837]
 
