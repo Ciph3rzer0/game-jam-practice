@@ -13,7 +13,7 @@ func process_input(_state: PlayerActor.State, _delta: float) -> void:
 		actor.velocity.y = actor.JUMP_VELOCITY * 1.5
 		
 		await get_tree().process_frame
-		actor.anim.speed_scale = 1
+		actor.anim.speed_scale = 4
 		actor.anim.play(&"jump-combo-3-start")
 		await actor.anim.animation_finished
 		actor.anim.speed_scale = 1

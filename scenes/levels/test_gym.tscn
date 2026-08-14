@@ -59,7 +59,38 @@ size = Vector3(5, 5, 1)
 [node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="Wall" unique_id=1394141833]
 shape = SubResource("ConcavePolygonShape3D_at6uk")
 
+[node name="Wall2" type="StaticBody3D" parent="." unique_id=266126154]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 8, 1.5, 12.371792)
+metadata/_edit_group_ = true
+
+[node name="WallMeshCSG" type="CSGBox3D" parent="Wall2" unique_id=204421187]
+size = Vector3(5, 5, 1)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="Wall2" unique_id=2063359345]
+shape = SubResource("ConcavePolygonShape3D_at6uk")
+
+[node name="Wall3" type="StaticBody3D" parent="." unique_id=1625844402]
+transform = Transform3D(1, 0, 0, 0, 0.7071068, -0.7071068, 0, 0.7071068, 0.7071068, 13, 0.5, 11.371792)
+metadata/_edit_group_ = true
+
+[node name="WallMeshCSG" type="CSGBox3D" parent="Wall3" unique_id=90649843]
+size = Vector3(5, 5, 1)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="Wall3" unique_id=935808896]
+shape = SubResource("ConcavePolygonShape3D_at6uk")
+
+[node name="Wall4" type="StaticBody3D" parent="." unique_id=1634381682]
+transform = Transform3D(1, 0, 0, 0, -0.25881913, -0.96592593, 0, 0.96592593, -0.25881913, 13, 0.19999999, 0.37179184)
+metadata/_edit_group_ = true
+
+[node name="WallMeshCSG" type="CSGBox3D" parent="Wall4" unique_id=789939390]
+size = Vector3(5, 5, 1)
+
+[node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="Wall4" unique_id=1291836341]
+shape = SubResource("ConcavePolygonShape3D_at6uk")
+
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
+floor_max_angle = 0.7853982
 MAX_MOVE_SPEED = 8.0
 ACCELERATION = 10.0
 DRAG_ACCEL = 4.0
