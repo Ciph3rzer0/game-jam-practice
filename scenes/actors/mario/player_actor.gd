@@ -1,7 +1,10 @@
 class_name PlayerActor
 extends CharacterBody3D
-
 signal on_player_state_frame(frame_state: PlayerActor.State)
+
+const VEC3_XZ := Vector3(1, 0, 1)
+const PROGRESS_CHARS := ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+const SKIDDING_ANGLE := cos(deg_to_rad(160))
 
 @export var MAX_MOVE_SPEED := 8.0
 @export var ACCELERATION := 12.0
@@ -9,12 +12,16 @@ signal on_player_state_frame(frame_state: PlayerActor.State)
 @export var JUMP_VELOCITY := 15.0
 @export var GRAVITY_ACCEL := 2.0
 @export var JUMP_CHAIN_WINDOW := 0.4
-
-const PROGRESS_CHARS = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+@export var TURN_SPEED := 2.0 # half-rotations/sec
 
 @onready var anim: AnimationPlayer = get_node("mario/AnimationPlayer") as AnimationPlayer
 
 var current_state: PlayerActor.State = State.new()
+
+var current_speed: float
+var target_speed: float
+var current_rotation: float
+var target_rotation: float
 
 func _ready() -> void:
 	assert(anim != null)
@@ -34,22 +41,46 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	# Is the player not holding any direction?
 	var zero_move_input = frame_input.move_vector.is_equal_approx(Vector2.ZERO)
 	
-	# Calculate acceleration
+	#region Acceleration
+	# Target Speed is determined by distance analog stick is pressed
+	target_speed = frame_input.move_vector.length() * MAX_MOVE_SPEED
+	# Get current horizontal speed
+	current_speed = (velocity * VEC3_XZ).length()
+	
+	var speed_diff := target_speed - current_speed
+	var speed_change := clampf(absf(speed_diff), 0.0, ACCELERATION * delta) * signf(speed_diff)
+	current_speed += speed_change
+	#endregion
+	
+	## Calculate acceleration
 	var move_accel : Vector3
-	if zero_move_input:
-		# Drag Force
-		move_accel = -velocity * (Vector3.ONE - Vector3.UP) * DRAG_ACCEL
-	else:
-		# Move Force
-		move_accel = move_vector * ACCELERATION
+	#if zero_move_input:
+		## Drag Force
+		#move_accel = -velocity * VEC3_XZ * DRAG_ACCEL
+	#if current_state.is_skidding:
+		## Drag Force
+		#move_accel = -velocity * VEC3_XZ * DRAG_ACCEL * 2
+	#else:
+		## Move Force
+		#move_accel = move_vector * ACCELERATION
+	
+	#region Turning
+	if !move_vector.is_zero_approx():
+		var target_rotation = Transform3D().looking_at(move_vector, Vector3.UP).basis.get_euler().y
+		current_rotation = rotate_toward(current_rotation, target_rotation, TURN_SPEED * PI * delta)
+	#endregion
 	
 	# Apply acceleration to velocity
-	velocity += (move_accel) * delta
+	var horizontal := velocity * VEC3_XZ
+	var direction := Vector3.FORWARD.rotated(Vector3.UP, current_rotation) if not zero_move_input else horizontal.normalized()
+	if not direction.is_zero_approx():
+		velocity.x = direction.x * current_speed
+		velocity.z = direction.z * current_speed
 	
 	var PREFIX = PROGRESS_CHARS[(Time.get_ticks_msec() / 100) % PROGRESS_CHARS.size()]
 	#print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), MAX_MOVE_SPEED, move_accel.length()])
 	
-	var horizontal := Vector3(velocity.x, 0, velocity.z)
+	horizontal = velocity * VEC3_XZ
 	if horizontal.length() > MAX_MOVE_SPEED:
 		horizontal = horizontal.normalized() * MAX_MOVE_SPEED
 		velocity.x = horizontal.x
@@ -58,14 +89,16 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		velocity.x = 0
 		velocity.z = 0
 	
-	# Look at direction
+	#region Look At
 	var look_at_target = velocity
 	look_at_target.y = 0
 	look_at_target += global_position
 	
 	if !global_position.is_equal_approx(look_at_target):
 		look_at(look_at_target, Vector3.UP)
+	#endregion
 	
+	#region Gravity
 	var gravity_to_apply := 0.0
 	
 	if velocity.y < 0:
@@ -78,7 +111,12 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		gravity_to_apply -= GRAVITY_ACCEL * 0.5
 	
 	velocity.y -= gravity_to_apply
+	#endregion
 	
+	if current_state.is_skidding:
+		if horizontal.is_zero_approx():
+			anim.speed_scale = 1
+			anim.play(&"quick-turn")
 	if is_on_floor():
 		if horizontal.is_zero_approx():
 			anim.speed_scale = 1
@@ -149,9 +187,8 @@ class State extends RefCounted:
 		
 		# Normalize to get pure directions
 		var dot_val = player_horizontal_velocity.normalized().dot(frame_input.move_vector.normalized())
-
-		if dot_val < -0.95:
-			#print("Pointing in the opposite direction!")
+		
+		if dot_val < SKIDDING_ANGLE:
 			state.is_skidding = true
 		
 		#endregion ### END FRAME INPUT PROCESSING ###

@@ -21,7 +21,7 @@ script = ExtResource("1_wqoce")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=183062279]
 shape = SubResource("SphereShape3D_x758c")
-spring_length = 6.0
+spring_length = 5.0
 
 [node name="LakituCam" type="Camera3D" parent="SpringArm3D" unique_id=689445914]
 unique_name_in_owner = true
