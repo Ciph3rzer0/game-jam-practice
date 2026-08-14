@@ -15,6 +15,8 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 @export var GRAVITY_MULTI_HOLDING_JUMP := 0.5
 @export var JUMP_CHAIN_WINDOW := 0.4
 @export var TURN_SPEED := 2.0 # half-rotations/sec
+@export var LOW_SPEED_TURN_MULTI := 6
+@export var SPEED_LOSS_WHILE_MOVING_MULTI := 2.0 
 
 @onready var anim: AnimationPlayer = get_node("mario/AnimationPlayer") as AnimationPlayer
 
@@ -77,8 +79,17 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	
 	#region Turning
 	if !move_vector.is_zero_approx():
-		var target_rotation = Transform3D().looking_at(move_vector, Vector3.UP).basis.get_euler().y
-		current_rotation = rotate_toward(current_rotation, target_rotation, TURN_SPEED * PI * delta)
+		var multi = clampf((1.0 - current_speed / MAX_MOVE_SPEED) * LOW_SPEED_TURN_MULTI, 1, LOW_SPEED_TURN_MULTI)
+
+		var target_turn_angle = Transform3D().looking_at(move_vector, Vector3.UP).basis.get_euler().y
+		var old_rotation = current_rotation
+		current_rotation = rotate_toward(current_rotation, target_turn_angle, TURN_SPEED * multi * PI * delta)
+		print(TURN_SPEED, "  -  ", TURN_SPEED * multi, " :: ", multi)
+		
+		var rotation_amount = abs(old_rotation-current_rotation)
+		var velocity_lost = min(rad_to_deg(rotation_amount), TURN_SPEED) * delta * SPEED_LOSS_WHILE_MOVING_MULTI
+		current_speed -= velocity_lost
+		
 	#endregion
 	
 	# Apply acceleration to velocity
@@ -115,7 +126,6 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	if velocity.y > 0:
 		gravity_to_apply = GRAVITY_ACCEL
 		if frame_input.jump_held:
-			print("Jumping higher")
 			gravity_to_apply *= GRAVITY_MULTI_HOLDING_JUMP
 	else:
 		gravity_to_apply += GRAVITY_ACCEL * GRAVITY_MULTI_FALLING
