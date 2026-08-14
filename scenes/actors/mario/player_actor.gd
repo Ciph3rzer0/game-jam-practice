@@ -11,6 +11,8 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 @export var DRAG_ACCEL := 4.0
 @export var JUMP_VELOCITY := 15.0
 @export var GRAVITY_ACCEL := 2.0
+@export var GRAVITY_MULTI_FALLING := 1.5
+@export var GRAVITY_MULTI_HOLDING_JUMP := 0.5
 @export var JUMP_CHAIN_WINDOW := 0.4
 @export var TURN_SPEED := 2.0 # half-rotations/sec
 
@@ -108,17 +110,17 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	#endregion
 	
 	#region Gravity
-	var gravity_to_apply := 0.0
+	var gravity_to_apply: float
 	
-	if velocity.y < 0:
-		gravity_to_apply += GRAVITY_ACCEL
+	if velocity.y > 0:
+		gravity_to_apply = GRAVITY_ACCEL
+		if frame_input.jump_held:
+			print("Jumping higher")
+			gravity_to_apply *= GRAVITY_MULTI_HOLDING_JUMP
 	else:
-		gravity_to_apply += GRAVITY_ACCEL * 1.5
+		gravity_to_apply += GRAVITY_ACCEL * GRAVITY_MULTI_FALLING
 	
 	# Apply Gravity
-	if frame_input.jump_held:
-		gravity_to_apply -= GRAVITY_ACCEL * 0.5
-	
 	velocity.y -= gravity_to_apply
 	#endregion
 	

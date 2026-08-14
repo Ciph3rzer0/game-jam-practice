@@ -1,6 +1,8 @@
 class_name Jump
 extends Ability
 
+@export var JUMP_HEIGHT_MULTI := 1.0
+
 ## Called once per physics tick, before actor.move_and_slide().
 ## Override to react to input and modify actor.velocity / state.
 func process_input(_state: PlayerActor.State, _delta: float) -> void:
@@ -10,7 +12,7 @@ func process_input(_state: PlayerActor.State, _delta: float) -> void:
 		_state.time_on_floor = 0
 		_state.last_jump = 0.0
 		_state.consecutive_jumps += 1
-		actor.velocity.y = actor.JUMP_VELOCITY
+		actor.velocity.y = actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI
 		
 		await get_tree().process_frame
 		actor.anim.speed_scale = 1

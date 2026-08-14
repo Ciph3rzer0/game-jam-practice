@@ -1,6 +1,8 @@
 class_name BackflipJump
 extends Ability
 
+@export var JUMP_HEIGHT_MULTI := 2.0
+
 ## Called once per physics tick, before actor.move_and_slide().
 ## Override to react to input and modify actor.velocity / state.
 func process_input(state: PlayerActor.State, delta: float) -> void:
@@ -12,8 +14,8 @@ func process_input(state: PlayerActor.State, delta: float) -> void:
 		state.consecutive_jumps += 1
 		state.is_crouching = false
 		state.is_crawling = false
-		actor.velocity.y = actor.JUMP_VELOCITY
+		actor.velocity.y = actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI
 		
 		await get_tree().process_frame
-		actor.anim.speed_scale = 1
-		actor.anim.play(&"winged-cap-flying")
+		actor.anim.speed_scale = 1.5
+		actor.anim.play(&"fuck")

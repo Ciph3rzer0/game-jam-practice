@@ -1,6 +1,8 @@
 class_name WallJump
 extends Ability
 
+@export var JUMP_HEIGHT_MULTI := 1.0
+
 ## Called once per physics tick, before actor.move_and_slide().
 ## Override to react to input and modify actor.velocity / state.
 func process_input(state: PlayerActor.State, delta: float) -> void:
@@ -16,7 +18,7 @@ func process_input(state: PlayerActor.State, delta: float) -> void:
 		state.time_on_floor = 0
 		state.last_jump = 0.0
 		state.consecutive_jumps = 1
-		actor.velocity = actor.JUMP_VELOCITY * jump_dir
+		actor.velocity = actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI * jump_dir
 		
 		await get_tree().process_frame
 		actor.anim.speed_scale = 1

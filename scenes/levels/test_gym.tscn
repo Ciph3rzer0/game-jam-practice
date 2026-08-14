@@ -91,7 +91,11 @@ size = Vector3(5, 5, 1)
 shape = SubResource("ConcavePolygonShape3D_at6uk")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
-GRAVITY_ACCEL = 0.5
+ACCELERATION = 6.0
+JUMP_VELOCITY = 6.0
+GRAVITY_ACCEL = 0.35
+GRAVITY_MULTI_FALLING = 1.4
+GRAVITY_MULTI_HOLDING_JUMP = 0.8
 JUMP_CHAIN_WINDOW = 0.5
 TURN_SPEED = 1.5
 
@@ -102,12 +106,14 @@ camera = NodePath("../../LakituCamera")
 
 [node name="BackflipJump" type="Node3D" parent="Player" unique_id=1273386055]
 script = ExtResource("3_8e4yp")
+JUMP_HEIGHT_MULTI = 1.5
 
 [node name="WallJump" type="Node3D" parent="Player" unique_id=1198430131]
 script = ExtResource("3_at6uk")
 
 [node name="TripleJump" type="Node3D" parent="Player" unique_id=930449821]
 script = ExtResource("3_pqs40")
+JUMP_HEIGHT_MULTI = 1.6
 
 [node name="DoubleJump" type="Node3D" parent="Player" unique_id=1475046652]
 script = ExtResource("3_0ucrb")
