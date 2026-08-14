@@ -136,7 +136,10 @@ func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		CURRENT_MAX_SPEED = MAX_MOVE_SPEED
 	#endregion
 	
-	if current_state.is_crawling:
+	if current_state.is_crouching:
+		anim.speed_scale = 1
+		anim.play(&"crouching")
+	elif current_state.is_crawling:
 		anim.speed_scale = 1
 		anim.play(&"crawling")
 	elif current_state.is_skidding:
@@ -167,6 +170,7 @@ class State extends RefCounted:
 	#var skid_direction: Vector2
 	var is_skidding: bool
 	var is_crawling: bool
+	var is_crouching: bool
 
 	var last_jump: float
 	var time_on_floor: float
@@ -213,9 +217,12 @@ class State extends RefCounted:
 		if state.is_on_floor and dot_val < SKIDDING_ANGLE:
 			state.is_skidding = true
 		
-		print(state.is_on_floor and frame_input.crouch_held)
 		if state.is_on_floor and frame_input.crouch_held:
-			state.is_crawling = true
+			if is_zero_approx(state.horizontal_speed):
+				state.is_crouching = true
+			else:
+				state.is_crawling = true
+		
 		#endregion ### END FRAME INPUT PROCESSING ###
 		
 		return state

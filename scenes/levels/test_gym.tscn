@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b5hvklm5vurpu" path="res://scenes/actors/mario/mario_actor.tscn" id="1_agfac"]
 [ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://scripts/player_controller.gd" id="1_k6jok"]
 [ext_resource type="Script" uid="uid://dwdl8sdmg14kv" path="res://scenes/actors/abilities/double_jump.gd" id="3_0ucrb"]
+[ext_resource type="Script" uid="uid://c5d3b4cmq68ck" path="res://scenes/actors/abilities/backflip_jump.gd" id="3_8e4yp"]
 [ext_resource type="Script" uid="uid://376srki7x84l" path="res://scenes/actors/abilities/wall_jump.gd" id="3_at6uk"]
 [ext_resource type="Script" uid="uid://dy1lh7prcvheb" path="res://scenes/actors/abilities/triple_jump.gd" id="3_pqs40"]
 [ext_resource type="Script" uid="uid://o8kphqmulfgh" path="res://scenes/actors/abilities/jump.gd" id="3_wwmcr"]
@@ -98,6 +99,9 @@ TURN_SPEED = 1.5
 script = ExtResource("1_k6jok")
 actor = NodePath("..")
 camera = NodePath("../../LakituCamera")
+
+[node name="BackflipJump" type="Node3D" parent="Player" unique_id=1273386055]
+script = ExtResource("3_8e4yp")
 
 [node name="WallJump" type="Node3D" parent="Player" unique_id=1198430131]
 script = ExtResource("3_at6uk")
