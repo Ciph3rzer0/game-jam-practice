@@ -11,6 +11,7 @@ signal on_player_state_frame(frame_state: PlayerActor.State)
 @export var JUMP_CHAIN_WINDOW := 0.4
 
 const PROGRESS_CHARS = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+const SKIDDING_ANGLE = cos(deg_to_rad(160))
 
 @onready var anim: AnimationPlayer = get_node("mario/AnimationPlayer") as AnimationPlayer
 
@@ -39,6 +40,9 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	if zero_move_input:
 		# Drag Force
 		move_accel = -velocity * (Vector3.ONE - Vector3.UP) * DRAG_ACCEL
+	if current_state.is_skidding:
+		# Drag Force
+		move_accel = -velocity * (Vector3.ONE - Vector3.UP) * DRAG_ACCEL * 2
 	else:
 		# Move Force
 		move_accel = move_vector * ACCELERATION
@@ -149,9 +153,8 @@ class State extends RefCounted:
 		
 		# Normalize to get pure directions
 		var dot_val = player_horizontal_velocity.normalized().dot(frame_input.move_vector.normalized())
-
-		if dot_val < -0.95:
-			#print("Pointing in the opposite direction!")
+		
+		if dot_val < SKIDDING_ANGLE:
 			state.is_skidding = true
 		
 		#endregion ### END FRAME INPUT PROCESSING ###
