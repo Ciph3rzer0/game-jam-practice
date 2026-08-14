@@ -112,8 +112,14 @@ class State extends RefCounted:
 	var time_on_floor: float
 	var consecutive_jumps: int
 
+	var vertical_speed: float
+	var horizontal_speed: float
+
 	static func capture(player: PlayerActor, previous_state: PlayerActor.State, frame_input: PlayerFrameInput, delta: float) -> State:
 		var state = State.new()
+		
+		state.vertical_speed = (player.velocity * Vector3(0, 1, 0)).length()
+		state.horizontal_speed = (player.velocity * Vector3(1, 0, 1)).length()
 		
 		#region STATE CARRYOVER
 		# LAST JUMP

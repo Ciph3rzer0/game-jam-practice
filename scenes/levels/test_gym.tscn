@@ -90,9 +90,7 @@ size = Vector3(5, 5, 1)
 shape = SubResource("ConcavePolygonShape3D_at6uk")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
-MAX_MOVE_SPEED = 8.0
 ACCELERATION = 10.0
-DRAG_ACCEL = 4.0
 GRAVITY_ACCEL = 0.5
 JUMP_CHAIN_WINDOW = 0.5
 
