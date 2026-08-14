@@ -49,9 +49,6 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	current_speed += speed_change
 	
 	#endregion
-	print("TS        ", target_speed)
-	print("CS        ", current_speed)
-	print("Speed Ch  ", speed_change)
 	
 	## Calculate acceleration
 	var move_accel : Vector3
@@ -65,18 +62,18 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		## Move Force
 		#move_accel = move_vector * ACCELERATION
 	
-	print("move_vector * current_speed  ", move_vector, " * ", current_speed, " = ", move_vector * current_speed)
 	move_accel = move_vector * current_speed
 	# Apply acceleration to velocity
 	var horizontal := velocity * VEC3_XZ
-	if not horizontal.is_zero_approx():
-		var direction := horizontal.normalized()
+	var direction := move_vector.normalized() if not zero_move_input else horizontal.normalized()
+	if not direction.is_zero_approx():
 		velocity.x = direction.x * current_speed
 		velocity.z = direction.z * current_speed
 	
 	var PREFIX = PROGRESS_CHARS[(Time.get_ticks_msec() / 100) % PROGRESS_CHARS.size()]
 	print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), MAX_MOVE_SPEED, move_accel.length()])
 	
+	horizontal = velocity * VEC3_XZ
 	if horizontal.length() > MAX_MOVE_SPEED:
 		horizontal = horizontal.normalized() * MAX_MOVE_SPEED
 		velocity.x = horizontal.x
