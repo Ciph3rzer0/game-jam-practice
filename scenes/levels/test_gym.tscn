@@ -94,9 +94,10 @@ GRAVITY_ACCEL = 0.5
 JUMP_CHAIN_WINDOW = 0.5
 TURN_SPEED = 1.5
 
-[node name="PlayerController" type="Node3D" parent="Player" unique_id=130017454 node_paths=PackedStringArray("actor")]
+[node name="PlayerController" type="Node3D" parent="Player" unique_id=130017454 node_paths=PackedStringArray("actor", "camera")]
 script = ExtResource("1_k6jok")
 actor = NodePath("..")
+camera = NodePath("../../LakituCamera")
 
 [node name="WallJump" type="Node3D" parent="Player" unique_id=1198430131]
 script = ExtResource("3_at6uk")
