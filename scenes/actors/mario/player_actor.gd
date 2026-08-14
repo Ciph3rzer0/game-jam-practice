@@ -41,9 +41,18 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	# Is the player not holding any direction?
 	var zero_move_input = frame_input.move_vector.is_equal_approx(Vector2.ZERO)
 	
+	#region Calculate Max Speed
+	var CURRENT_MAX_SPEED: float
+	
+	if current_state.is_crawling:
+		CURRENT_MAX_SPEED = MAX_MOVE_SPEED / 4.0
+	else:
+		CURRENT_MAX_SPEED = MAX_MOVE_SPEED
+	#endregion
+	
 	#region Acceleration
 	# Target Speed is determined by distance analog stick is pressed
-	target_speed = frame_input.move_vector.length() * MAX_MOVE_SPEED
+	target_speed = frame_input.move_vector.length() * CURRENT_MAX_SPEED
 	# Get current horizontal speed
 	current_speed = (velocity * VEC3_XZ).length()
 	
@@ -53,7 +62,7 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	#endregion
 	
 	## Calculate acceleration
-	var move_accel : Vector3
+	#var move_accel : Vector3
 	#if zero_move_input:
 		## Drag Force
 		#move_accel = -velocity * VEC3_XZ * DRAG_ACCEL
@@ -78,11 +87,11 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		velocity.z = direction.z * current_speed
 	
 	var PREFIX = PROGRESS_CHARS[(Time.get_ticks_msec() / 100) % PROGRESS_CHARS.size()]
-	#print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), MAX_MOVE_SPEED, move_accel.length()])
+	#print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), CURRENT_MAX_SPEED, move_accel.length()])
 	
 	horizontal = velocity * VEC3_XZ
-	if horizontal.length() > MAX_MOVE_SPEED:
-		horizontal = horizontal.normalized() * MAX_MOVE_SPEED
+	if horizontal.length() > CURRENT_MAX_SPEED:
+		horizontal = horizontal.normalized() * CURRENT_MAX_SPEED
 		velocity.x = horizontal.x
 		velocity.z = horizontal.z
 	elif zero_move_input and horizontal.length() < 6.0 / 60:
@@ -113,22 +122,24 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	velocity.y -= gravity_to_apply
 	#endregion
 	
-	if current_state.is_skidding:
-		if horizontal.is_zero_approx():
-			anim.speed_scale = 1
-			anim.play(&"quick-turn")
-	if is_on_floor():
+	if current_state.is_crawling:
+		anim.speed_scale = 1
+		anim.play(&"crawling")
+	elif current_state.is_skidding:
+		anim.speed_scale = 1
+		anim.play(&"quick-turn")
+	elif is_on_floor():
 		if horizontal.is_zero_approx():
 			anim.speed_scale = 1
 			anim.play(&"idle")
-		elif velocity.length() < MAX_MOVE_SPEED * 0.2:
-			anim.speed_scale = (velocity.length() / MAX_MOVE_SPEED) * 3
+		elif velocity.length() < CURRENT_MAX_SPEED * 0.2:
+			anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 3
 			anim.play(&"tiptoe")
-		elif velocity.length() < MAX_MOVE_SPEED * 0.7:
-			anim.speed_scale = (velocity.length() / MAX_MOVE_SPEED) * 3
+		elif velocity.length() < CURRENT_MAX_SPEED * 0.7:
+			anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 3
 			anim.play(&"walk")
 		else:
-			anim.speed_scale = (velocity.length() / MAX_MOVE_SPEED) * 0.9
+			anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 0.9
 			anim.play(&"run")
 	
 	move_and_slide()
@@ -145,6 +156,7 @@ class State extends RefCounted:
 	# Mario skids if moving opposite of velocity
 	#var skid_direction: Vector2
 	var is_skidding: bool
+	var is_crawling: bool
 
 	var last_jump: float
 	var time_on_floor: float
@@ -191,6 +203,8 @@ class State extends RefCounted:
 		if dot_val < SKIDDING_ANGLE:
 			state.is_skidding = true
 		
+		if frame_input.crouch_held:
+			state.is_crawling = true
 		#endregion ### END FRAME INPUT PROCESSING ###
 		
 		return state
