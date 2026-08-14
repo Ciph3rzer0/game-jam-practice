@@ -49,7 +49,7 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var CURRENT_MAX_SPEED: float
 	
 	if current_state.is_crawling:
-		CURRENT_MAX_SPEED = MAX_MOVE_SPEED / 4.0
+		CURRENT_MAX_SPEED = MAX_MOVE_SPEED / 2.0
 	else:
 		CURRENT_MAX_SPEED = MAX_MOVE_SPEED
 	#endregion
@@ -84,12 +84,11 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		var target_turn_angle = Transform3D().looking_at(move_vector, Vector3.UP).basis.get_euler().y
 		var old_rotation = current_rotation
 		current_rotation = rotate_toward(current_rotation, target_turn_angle, TURN_SPEED * multi * PI * delta)
-		print(TURN_SPEED, "  -  ", TURN_SPEED * multi, " :: ", multi)
+		#print(TURN_SPEED, "  -  ", TURN_SPEED * multi, " :: ", multi)
 		
 		var rotation_amount = abs(old_rotation-current_rotation)
 		var velocity_lost = min(rad_to_deg(rotation_amount), TURN_SPEED) * delta * SPEED_LOSS_WHILE_MOVING_MULTI
 		current_speed -= velocity_lost
-		
 	#endregion
 	
 	# Apply acceleration to velocity
@@ -117,6 +116,10 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	look_at_target += global_position
 	
 	if !global_position.is_equal_approx(look_at_target):
+		
+		if !move_vector.is_zero_approx() and current_state.is_skidding:
+			# SKIDDING IS HARD TODO
+			look_at(global_position + Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y), Vector3.UP)
 		look_at(look_at_target, Vector3.UP)
 	#endregion
 	

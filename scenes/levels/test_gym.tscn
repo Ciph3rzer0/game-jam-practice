@@ -98,7 +98,7 @@ GRAVITY_MULTI_FALLING = 1.4
 GRAVITY_MULTI_HOLDING_JUMP = 0.8
 JUMP_CHAIN_WINDOW = 0.5
 TURN_SPEED = 1.0
-LOW_SPEED_TURN_MULTI = 4
+LOW_SPEED_TURN_MULTI = 3
 
 [node name="PlayerController" type="Node3D" parent="Player" unique_id=130017454 node_paths=PackedStringArray("actor", "camera")]
 script = ExtResource("1_k6jok")

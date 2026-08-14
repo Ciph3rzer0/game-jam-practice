@@ -18,4 +18,4 @@ func process_input(state: PlayerActor.State, delta: float) -> void:
 		
 		await get_tree().process_frame
 		actor.anim.speed_scale = 1.5
-		actor.anim.play(&"fuck")
+		actor.anim.play(&"backflip")
