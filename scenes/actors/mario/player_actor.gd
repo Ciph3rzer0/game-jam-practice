@@ -12,6 +12,7 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 @export var JUMP_VELOCITY := 15.0
 @export var GRAVITY_ACCEL := 2.0
 @export var JUMP_CHAIN_WINDOW := 0.4
+@export var TURN_SPEED := 2.0 # half-rotations/sec
 
 @onready var anim: AnimationPlayer = get_node("mario/AnimationPlayer") as AnimationPlayer
 
@@ -19,6 +20,8 @@ var current_state: PlayerActor.State = State.new()
 
 var current_speed: float
 var target_speed: float
+var current_rotation: float
+var target_rotation: float
 
 func _ready() -> void:
 	assert(anim != null)
@@ -47,7 +50,6 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var speed_diff := target_speed - current_speed
 	var speed_change := clampf(absf(speed_diff), 0.0, ACCELERATION * delta) * signf(speed_diff)
 	current_speed += speed_change
-	
 	#endregion
 	
 	## Calculate acceleration
@@ -62,16 +64,21 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		## Move Force
 		#move_accel = move_vector * ACCELERATION
 	
-	move_accel = move_vector * current_speed
+	#region Turning
+	if !move_vector.is_zero_approx():
+		var target_rotation = Transform3D().looking_at(move_vector, Vector3.UP).basis.get_euler().y
+		current_rotation = rotate_toward(current_rotation, target_rotation, TURN_SPEED * PI * delta)
+	#endregion
+	
 	# Apply acceleration to velocity
 	var horizontal := velocity * VEC3_XZ
-	var direction := move_vector.normalized() if not zero_move_input else horizontal.normalized()
+	var direction := Vector3.FORWARD.rotated(Vector3.UP, current_rotation) if not zero_move_input else horizontal.normalized()
 	if not direction.is_zero_approx():
 		velocity.x = direction.x * current_speed
 		velocity.z = direction.z * current_speed
 	
 	var PREFIX = PROGRESS_CHARS[(Time.get_ticks_msec() / 100) % PROGRESS_CHARS.size()]
-	print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), MAX_MOVE_SPEED, move_accel.length()])
+	#print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), MAX_MOVE_SPEED, move_accel.length()])
 	
 	horizontal = velocity * VEC3_XZ
 	if horizontal.length() > MAX_MOVE_SPEED:
