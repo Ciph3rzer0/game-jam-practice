@@ -2,7 +2,7 @@ extends Node3D
 
 @export var camera_target: PlayerActor
 
-@export var CAMERA_HEIGHT := 4
+@export var CAMERA_HEIGHT := 4.0
 @export var CAMERA_SPEED := 2.0
 @export var ORBIT_SPEED := 1.0
 
