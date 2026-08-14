@@ -137,11 +137,9 @@ func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	#endregion
 	
 	if current_state.is_crawling:
-		print("crawling")
 		anim.speed_scale = 1
 		anim.play(&"crawling")
 	elif current_state.is_skidding:
-		print("skidding")
 		anim.speed_scale = 1
 		anim.play(&"quick-turn")
 	elif is_on_floor():

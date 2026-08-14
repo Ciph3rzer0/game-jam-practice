@@ -35,4 +35,8 @@ func _physics_process(delta: float) -> void:
 		if auto_cam_timer > 0:
 			target_basis = Basis(Vector3.UP, cam_rotation)
 		
-		global_transform.basis = global_transform.basis.orthonormalized().slerp(target_basis, ORBIT_SPEED * delta)
+		var CAMERA_ORBIT_EFFECT = clampf(camera_target.velocity.length() / 6.0, 0, 1)
+		
+		global_transform.basis = global_transform.basis.orthonormalized().slerp(
+			target_basis, CAMERA_ORBIT_EFFECT * ORBIT_SPEED * delta
+		)
