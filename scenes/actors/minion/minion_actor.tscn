@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ck20mmychrtqx"]
 
-[ext_resource type="Script" uid="uid://bewd6f4anrs3x" path="res://scenes/actors/minion/minion_actor.gd" id="1_nobbs"]
+[ext_resource type="Script" uid="uid://bewd6f4anrs3x" path="res://scenes/actors/mario/player_actor.gd" id="1_nobbs"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qy3w5"]
 

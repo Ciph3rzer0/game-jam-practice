@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://o8kphqmulfgh" path="res://scenes/actors/abilities/jump.gd" id="3_wwmcr"]
 [ext_resource type="Script" uid="uid://b30jksbyr8sxr" path="res://scenes/ui/player_input_display.gd" id="4_d4y46"]
 [ext_resource type="Script" uid="uid://che0sm5mh0euc" path="res://scenes/ui/player_state_display.gd" id="6_0ucrb"]
+[ext_resource type="PackedScene" uid="uid://bkxlxv6itygxv" path="res://scenes/camera/lakitu_camera.tscn" id="7_x758c"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_blxge"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -28,7 +29,6 @@ data = PackedVector3Array(-2.5, -2.5, 0.5, -2.5, -2.5, -0.5, -2.5, 2.5, -0.5, 2.
 
 [node name="TestGym" type="Node3D" unique_id=1514201132]
 metadata/_edit_lock_ = true
-metadata/_edit_group_ = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=306784187]
 environment = SubResource("Environment_agfac")
@@ -90,10 +90,7 @@ size = Vector3(5, 5, 1)
 shape = SubResource("ConcavePolygonShape3D_at6uk")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
-floor_max_angle = 0.7853982
-MAX_MOVE_SPEED = 8.0
 ACCELERATION = 10.0
-DRAG_ACCEL = 4.0
 GRAVITY_ACCEL = 0.5
 JUMP_CHAIN_WINDOW = 0.5
 
@@ -113,8 +110,11 @@ script = ExtResource("3_0ucrb")
 [node name="SingleJump" type="Node3D" parent="Player" unique_id=1773954802]
 script = ExtResource("3_wwmcr")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=501066307]
-transform = Transform3D(-4.222196e-08, 0.25881907, -0.9659258, 1.131334e-08, 0.9659259, 0.25881907, 1, 8.881784e-16, -4.371139e-08, -3.5546312, 5.4938717, 0)
+[node name="LakituCamera" parent="." unique_id=902191612 node_paths=PackedStringArray("camera_target") instance=ExtResource("7_x758c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3520052, 0)
+camera_target = NodePath("../Player")
+CAMERA_SPEED = 3.0
+ORBIT_SPEED = 0.7
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1972452837]
 
@@ -133,20 +133,27 @@ script = ExtResource("4_d4y46")
 
 [node name="Jump" type="CheckButton" parent="CanvasLayer/PlayerInputDisplay" unique_id=385365975]
 layout_mode = 0
-offset_left = 95.0
-offset_top = 3.0
-offset_right = 184.0
-offset_bottom = 34.0
+offset_left = 47.0
+offset_top = 4.0
+offset_right = 136.0
+offset_bottom = 35.0
 text = "Jump"
 
 [node name="Crouch" type="CheckButton" parent="CanvasLayer/PlayerInputDisplay" unique_id=1244872672]
 layout_mode = 0
-offset_left = 211.0
-offset_top = 3.0
-offset_right = 315.0
-offset_bottom = 34.0
-text = "Crouch
-"
+offset_left = 263.0
+offset_top = 4.0
+offset_right = 367.0
+offset_bottom = 35.0
+text = "Crouch"
+
+[node name="Action" type="CheckButton" parent="CanvasLayer/PlayerInputDisplay" unique_id=881499460]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 4.0
+offset_right = 254.0
+offset_bottom = 35.0
+text = "Action"
 
 [node name="PlayerStateDisplay" type="Panel" parent="CanvasLayer" unique_id=492712453]
 anchors_preset = 7
@@ -164,18 +171,18 @@ script = ExtResource("6_0ucrb")
 
 [node name="Grounded" type="CheckButton" parent="CanvasLayer/PlayerStateDisplay" unique_id=126652857]
 layout_mode = 0
-offset_left = 95.0
-offset_top = 3.0
-offset_right = 184.0
-offset_bottom = 34.0
+offset_left = 63.0
+offset_top = 9.0
+offset_right = 189.0
+offset_bottom = 40.0
 text = "Grounded"
 
 [node name="Skidding" type="CheckButton" parent="CanvasLayer/PlayerStateDisplay" unique_id=2018116128]
 layout_mode = 0
-offset_left = 211.0
-offset_top = 3.0
-offset_right = 315.0
-offset_bottom = 34.0
+offset_left = 205.0
+offset_top = 5.0
+offset_right = 319.0
+offset_bottom = 36.0
 text = "Skidding"
 
 [node name="LastJump" type="Label" parent="CanvasLayer/PlayerStateDisplay" unique_id=746191414]
