@@ -22,11 +22,6 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 
 var current_state: PlayerActorState = PlayerActorState.new()
 
-var current_speed: float
-var target_speed: float
-var current_rotation: float
-var target_rotation: float
-
 func _ready() -> void:
 	assert(anim != null)
 
@@ -73,13 +68,13 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	
 	#region Acceleration
 	# Target Speed is determined by distance analog stick is pressed
-	target_speed = frame_input.move_vector.length() * CURRENT_MAX_SPEED
+	current_state.target_horizontal_speed = frame_input.move_vector.length() * CURRENT_MAX_SPEED
 	# Get current horizontal speed
-	current_speed = (velocity * VEC3_XZ).length()
+	current_state.horizontal_speed = (velocity * VEC3_XZ).length()
 	
-	var speed_diff := target_speed - current_speed
+	var speed_diff := current_state.target_horizontal_speed - current_state.horizontal_speed
 	var speed_change := clampf(absf(speed_diff), 0.0, ACCELERATION * delta) * signf(speed_diff)
-	current_speed += speed_change
+	current_state.horizontal_speed += speed_change
 	#endregion
 	
 	## Calculate acceleration
@@ -96,24 +91,24 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	
 	#region Turning
 	if !move_vector.is_zero_approx():
-		var multi = clampf((1.0 - current_speed / MAX_MOVE_SPEED) * LOW_SPEED_TURN_MULTI, 1, LOW_SPEED_TURN_MULTI)
+		var multi = clampf((1.0 - current_state.horizontal_speed / MAX_MOVE_SPEED) * LOW_SPEED_TURN_MULTI, 1, LOW_SPEED_TURN_MULTI)
 
 		var target_turn_angle = Transform3D().looking_at(move_vector, Vector3.UP).basis.get_euler().y
-		var old_rotation = current_rotation
-		current_rotation = rotate_toward(current_rotation, target_turn_angle, TURN_SPEED * multi * PI * delta)
+		var old_rotation = current_state.current_rotation
+		current_state.current_rotation = rotate_toward(current_state.current_rotation, target_turn_angle, TURN_SPEED * multi * PI * delta)
 		#print(TURN_SPEED, "  -  ", TURN_SPEED * multi, " :: ", multi)
 		
-		var rotation_amount = abs(old_rotation-current_rotation)
+		var rotation_amount = abs(old_rotation-current_state.current_rotation)
 		var velocity_lost = min(rad_to_deg(rotation_amount), TURN_SPEED) * delta * SPEED_LOSS_WHILE_MOVING_MULTI
-		current_speed -= velocity_lost
+		current_state.horizontal_speed -= velocity_lost
 	#endregion
 	
 	# Apply acceleration to velocity
 	var horizontal := velocity * VEC3_XZ
-	var direction := Vector3.FORWARD.rotated(Vector3.UP, current_rotation) if not frame_input.is_move_input_neutral else horizontal.normalized()
+	var direction := Vector3.FORWARD.rotated(Vector3.UP, current_state.current_rotation) if not frame_input.is_move_input_neutral else horizontal.normalized()
 	if not direction.is_zero_approx():
-		velocity.x = direction.x * current_speed
-		velocity.z = direction.z * current_speed
+		velocity.x = direction.x * current_state.horizontal_speed
+		velocity.z = direction.z * current_state.horizontal_speed
 	
 	var PREFIX = PROGRESS_CHARS[(Time.get_ticks_msec() / 100) % PROGRESS_CHARS.size()]
 	#print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), CURRENT_MAX_SPEED, move_accel.length()])

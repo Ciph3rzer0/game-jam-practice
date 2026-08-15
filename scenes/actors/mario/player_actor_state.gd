@@ -15,7 +15,12 @@ var time_on_floor: float
 var consecutive_jumps: int
 
 var vertical_speed: float
+
 var horizontal_speed: float
+var target_horizontal_speed: float
+
+var current_rotation: float
+var target_rotation: float
 
 static func capture(player: PlayerActor, previous_state: PlayerActorState, frame_input: PlayerFrameInput, delta: float) -> PlayerActorState:
 	var state = PlayerActorState.new()
@@ -24,6 +29,11 @@ static func capture(player: PlayerActor, previous_state: PlayerActorState, frame
 	state.horizontal_speed = (player.velocity * Vector3(1, 0, 1)).length()
 	
 	#region STATE CARRYOVER
+	state.vertical_speed = previous_state.vertical_speed
+	state.horizontal_speed = previous_state.horizontal_speed
+	state.target_horizontal_speed = previous_state.target_horizontal_speed
+	state.current_rotation = previous_state.current_rotation
+	state.target_rotation = previous_state.target_rotation
 	# LAST JUMP
 	state.last_jump = previous_state.last_jump + delta
 	
