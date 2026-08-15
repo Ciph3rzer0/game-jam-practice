@@ -49,105 +49,21 @@ func collect_state(frame_input: PlayerFrameInput, delta: float) -> PlayerActorSt
 # ----------------------------------------
 # Called **1st** in player_controller
 # ----------------------------------------
+# 1. Get mario's input vector
+# 2. Calculate turn angle
+# 3. Calculate turn speed reduction
+# 4. Modify current_speed based on target_speed
+#
 func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
-	var move_vector := Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y)
+	var movement_input_3d = get_movement_vector(frame_input.move_vector)
+	var stick_activation_percent = frame_input.move_vector.length()
+	var CURRENT_MAX_SPEED: float = get_max_speed()
 	
-	# Translate movement based on camera view
-	var camera = get_viewport().get_camera_3d()
-	move_vector = move_vector.rotated(Vector3.UP, camera.global_rotation.y)
-	
-	
-	#region Calculate Max Speed
-	var CURRENT_MAX_SPEED: float
-	
-	if current_state.is_crawling:
-		CURRENT_MAX_SPEED = MAX_MOVE_SPEED / 2.0
-	else:
-		CURRENT_MAX_SPEED = MAX_MOVE_SPEED
-	#endregion
-	
-	#region Acceleration
-	# Target Speed is determined by distance analog stick is pressed
-	current_state.target_horizontal_speed = frame_input.move_vector.length() * CURRENT_MAX_SPEED
-	# Get current horizontal speed
-	current_state.horizontal_speed = (velocity * VEC3_XZ).length()
-	
-	var speed_diff := current_state.target_horizontal_speed - current_state.horizontal_speed
-	var speed_change := clampf(absf(speed_diff), 0.0, ACCELERATION * delta) * signf(speed_diff)
-	current_state.horizontal_speed += speed_change
-	#endregion
-	
-	## Calculate acceleration
-	#var move_accel : Vector3
-	#if frame_input.is_move_input_neutral:
-		## Drag Force
-		#move_accel = -velocity * VEC3_XZ * DRAG_ACCEL
-	#if current_state.is_skidding:
-		## Drag Force
-		#move_accel = -velocity * VEC3_XZ * DRAG_ACCEL * 2
-	#else:
-		## Move Force
-		#move_accel = move_vector * ACCELERATION
-	
-	#region Turning
-	if !move_vector.is_zero_approx():
-		var multi = clampf((1.0 - current_state.horizontal_speed / MAX_MOVE_SPEED) * LOW_SPEED_TURN_MULTI, 1, LOW_SPEED_TURN_MULTI)
-
-		var target_turn_angle = Transform3D().looking_at(move_vector, Vector3.UP).basis.get_euler().y
-		var old_rotation = current_state.current_rotation
-		current_state.current_rotation = rotate_toward(current_state.current_rotation, target_turn_angle, TURN_SPEED * multi * PI * delta)
-		#print(TURN_SPEED, "  -  ", TURN_SPEED * multi, " :: ", multi)
-		
-		var rotation_amount = abs(old_rotation-current_state.current_rotation)
-		var velocity_lost = min(rad_to_deg(rotation_amount), TURN_SPEED) * delta * SPEED_LOSS_WHILE_MOVING_MULTI
-		current_state.horizontal_speed -= velocity_lost
-	#endregion
-	
-	# Apply acceleration to velocity
-	var horizontal := velocity * VEC3_XZ
-	var direction := Vector3.FORWARD.rotated(Vector3.UP, current_state.current_rotation) if not frame_input.is_move_input_neutral else horizontal.normalized()
-	if not direction.is_zero_approx():
-		velocity.x = direction.x * current_state.horizontal_speed
-		velocity.z = direction.z * current_state.horizontal_speed
-	
-	var PREFIX = PROGRESS_CHARS[(Time.get_ticks_msec() / 100) % PROGRESS_CHARS.size()]
-	#print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), CURRENT_MAX_SPEED, move_accel.length()])
-	
-	horizontal = velocity * VEC3_XZ
-	if horizontal.length() > CURRENT_MAX_SPEED:
-		horizontal = horizontal.normalized() * CURRENT_MAX_SPEED
-		velocity.x = horizontal.x
-		velocity.z = horizontal.z
-	elif frame_input.is_move_input_neutral and horizontal.length() < 6.0 / 60:
-		velocity.x = 0
-		velocity.z = 0
-	
-	#region Look At
-	var look_at_target = velocity
-	look_at_target.y = 0
-	look_at_target += global_position
-	
-	if !global_position.is_equal_approx(look_at_target):
-		
-		if !move_vector.is_zero_approx() and current_state.is_skidding:
-			# SKIDDING IS HARD TODO
-			look_at(global_position + Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y), Vector3.UP)
-		look_at(look_at_target, Vector3.UP)
-	#endregion
-	
-	#region Gravity
-	var gravity_to_apply: float
-	
-	if velocity.y > 0:
-		gravity_to_apply = GRAVITY_ACCEL
-		if frame_input.jump_held:
-			gravity_to_apply *= GRAVITY_MULTI_HOLDING_JUMP
-	else:
-		gravity_to_apply += GRAVITY_ACCEL * GRAVITY_MULTI_FALLING
-	
-	# Apply Gravity
-	velocity.y -= gravity_to_apply
-	#endregion
+	apply_acceleration(stick_activation_percent, CURRENT_MAX_SPEED, delta)
+	apply_turning(movement_input_3d, delta)
+	apply_acceleration_to_velocity(CURRENT_MAX_SPEED, frame_input.is_move_input_neutral)
+	apply_look_at()
+	apply_gravity(frame_input.jump_held)
 
 # ----------------------------------------
 # Called **3rd** in player_controller
@@ -155,14 +71,12 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var horizontal = velocity * VEC3_XZ
 	
-		#region Calculate Max Speed
 	var CURRENT_MAX_SPEED: float
 	
 	if current_state.is_crawling:
 		CURRENT_MAX_SPEED = MAX_MOVE_SPEED / 4.0
 	else:
 		CURRENT_MAX_SPEED = MAX_MOVE_SPEED
-	#endregion
 	
 	if current_state.is_crouching:
 		anim.speed_scale = 1
@@ -186,4 +100,100 @@ func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		else:
 			anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 0.9
 			anim.play(&"run")
+
+##
+## Get 3D Movement Vector from 2D input and camera transform
+func get_movement_vector(move_vector_2d: Vector2) -> Vector3:
+	var move_vector := Vector3(move_vector_2d.x, 0, move_vector_2d.y)
 	
+	# Translate movement based on camera view
+	var camera = get_viewport().get_camera_3d()
+	move_vector = move_vector.rotated(Vector3.UP, camera.global_rotation.y)
+	return move_vector
+
+##
+## Get max speed based on actor state
+func get_max_speed() -> float:
+	if current_state.is_crawling:
+		return MAX_MOVE_SPEED / 2.0
+	else:
+		return MAX_MOVE_SPEED
+
+##
+## Apply acceleration to actor
+func apply_acceleration(acceleration_percent: float, max_speed: float, delta: float):
+	# Target Speed is determined by distance analog stick is pressed
+	current_state.target_horizontal_speed = acceleration_percent * max_speed
+	# Get current horizontal speed
+	current_state.horizontal_speed = (velocity * VEC3_XZ).length()
+	
+	var speed_diff := current_state.target_horizontal_speed - current_state.horizontal_speed
+	var speed_change := clampf(absf(speed_diff), 0.0, ACCELERATION * delta) * signf(speed_diff)
+	current_state.horizontal_speed += speed_change
+
+##
+## Apply turning to actor
+func apply_turning(move_vector: Vector3, delta: float):
+	if move_vector.is_zero_approx():
+		return
+	
+	var multi = clampf((1.0 - current_state.horizontal_speed / MAX_MOVE_SPEED) * LOW_SPEED_TURN_MULTI, 1, LOW_SPEED_TURN_MULTI)
+
+	var target_turn_angle = Transform3D().looking_at(move_vector, Vector3.UP).basis.get_euler().y
+	var old_rotation = current_state.current_rotation
+	current_state.current_rotation = rotate_toward(current_state.current_rotation, target_turn_angle, TURN_SPEED * multi * PI * delta)
+	#print(TURN_SPEED, "  -  ", TURN_SPEED * multi, " :: ", multi)
+	
+	var rotation_amount = abs(old_rotation-current_state.current_rotation)
+	var velocity_lost = min(rad_to_deg(rotation_amount), TURN_SPEED) * delta * SPEED_LOSS_WHILE_MOVING_MULTI
+	current_state.horizontal_speed -= velocity_lost	
+
+##
+## Apply acceleration to velocity
+func apply_acceleration_to_velocity(max_speed: float, is_move_input_neutral: bool):
+	var horizontal := velocity * VEC3_XZ
+	var direction := Vector3.FORWARD.rotated(Vector3.UP, current_state.current_rotation) if not is_move_input_neutral else horizontal.normalized()
+	if not direction.is_zero_approx():
+		velocity.x = direction.x * current_state.horizontal_speed
+		velocity.z = direction.z * current_state.horizontal_speed
+	
+	# var PREFIX = PROGRESS_CHARS[(Time.get_ticks_msec() / 100) % PROGRESS_CHARS.size()]
+	#print("%s SPEED: %5.2f / %d.  Move: %5.2f" % [PREFIX, velocity.length(), max_speed, move_accel.length()])
+	
+	horizontal = velocity * VEC3_XZ
+	if horizontal.length() > max_speed:
+		horizontal = horizontal.normalized() * max_speed
+		velocity.x = horizontal.x
+		velocity.z = horizontal.z
+	elif is_move_input_neutral and horizontal.length() < 6.0 / 60:
+		velocity.x = 0
+		velocity.z = 0
+
+##
+## Apply correct angle to actor
+func apply_look_at():
+	var look_at_target = velocity
+	look_at_target.y = 0
+	look_at_target += global_position
+	
+	if !global_position.is_equal_approx(look_at_target):
+		
+		# if !move_vector.is_zero_approx() and current_state.is_skidding:
+		# 	# SKIDDING IS HARD TODO
+		# 	look_at(global_position + Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y), Vector3.UP)
+		look_at(look_at_target, Vector3.UP)
+
+##
+## Apply gravity to actor
+func apply_gravity(is_jump_held: bool):
+	var gravity_to_apply: float
+	
+	if velocity.y > 0:
+		gravity_to_apply = GRAVITY_ACCEL
+		if is_jump_held:
+			gravity_to_apply *= GRAVITY_MULTI_HOLDING_JUMP
+	else:
+		gravity_to_apply += GRAVITY_ACCEL * GRAVITY_MULTI_FALLING
+	
+	# Apply Gravity
+	velocity.y -= gravity_to_apply
