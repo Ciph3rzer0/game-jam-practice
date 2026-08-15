@@ -30,15 +30,16 @@ var target_rotation: float
 func _ready() -> void:
 	assert(anim != null)
 
-
-## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## This Actor is controlled by PlayerController
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Player Controller Order of Operations
 ##  1. [      ] Collect Frame Input
 ##  2. [ self ] Pre Process Movement
-##  3. [ self ] Collect Player State
-##  4. [      ] Process Abilities
-##  5. [ self ] Post Actor Processes
-##  6. [ self ] Apply Movement
+##  3. [      ] Apply Movement
+##  4. [ self ] Collect Player State
+##  5. [      ] Process Abilities
+##  6. [ self ] Post Actor Processes
 ##  7. [      ] Camera Control
 ## 
 
@@ -152,8 +153,6 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	# Apply Gravity
 	velocity.y -= gravity_to_apply
 	#endregion
-	
-	move_and_slide()
 
 # ----------------------------------------
 # Called **3rd** in player_controller

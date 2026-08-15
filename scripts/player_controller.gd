@@ -4,10 +4,10 @@ extends Node3D
 ## Player Controller Order of Operations
 ##  1. Collect Frame Input
 ##  2. Pre Process Movement
-##  3. Collect Player State
-##  4. Process Abilities
-##  5. Post Actor Processes
-##  6. Apply Movement
+##  3. Apply Movement
+##  4. Collect Player State
+##  5. Process Abilities
+##  6. Post Actor Processes
 ##  7. Camera Control
 ## 
 
@@ -22,11 +22,18 @@ func _physics_process(delta: float) -> void:
 	on_player_input_frame.emit(frame_input)
 	#endregion
 	
-	#region Pre Process Movement & Collect Player State
+	#region Pre Process Movement
 	actor.pre_process_input(frame_input, delta)
-	var state: PlayerActorState = actor.collect_state(frame_input, delta)
+	#endregion
+
+	#region Apply Movement ???
+	actor.move_and_slide()
 	#endregion
 	
+	#region Collect Player State
+	var state: PlayerActorState = actor.collect_state(frame_input, delta)
+	#endregion
+
 	#region Process Abilities
 	var abilities: Array[Ability] = []
 	abilities.assign(get_parent().find_children("*", "Ability", true, false))
@@ -37,10 +44,6 @@ func _physics_process(delta: float) -> void:
 
 	#region Post Actor Processes
 	actor.post_process_input(frame_input, delta)
-	#endregion
-	
-	#region Apply Movement ???
-	#actor.move_and_slide()
 	#endregion
 	
 	#region Camera Control
