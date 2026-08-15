@@ -1,7 +1,10 @@
 class_name PlayerFrameInput
 extends RefCounted
 
+var tick: int
 var move_vector: Vector2
+# Is the player not holding any move direction?
+var is_move_input_neutral: bool
 
 var jump_pressed: bool
 var jump_pressed_consumed: bool
@@ -18,13 +21,13 @@ var action_held_consumed: bool
 
 var crouch_held: bool
 var crouch_held_consumed: bool
-var tick: int
 
 static func capture(current_tick: int) -> PlayerFrameInput:
 	var input := PlayerFrameInput.new()
 	#input.move_vector = Input.get_vector("pc_backward", "pc_forward", "pc_left", "pc_right", 0.2)
 	## ****** input.move_vector = Input.get_vector("pc_left", "pc_right", "pc_backward", "pc_forward", 0.2)
 	input.move_vector = Input.get_vector("pc_left", "pc_right", "pc_forward", "pc_backward", 0.2)
+	input.is_move_input_neutral = input.move_vector.is_zero_approx()
 	input.jump_held = Input.is_action_pressed("pc_jump")
 	input.jump_pressed = Input.is_action_just_pressed("pc_jump")
 	input.crouch_pressed = Input.is_action_just_pressed("pc_crouch")

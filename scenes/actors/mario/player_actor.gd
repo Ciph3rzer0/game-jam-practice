@@ -60,8 +60,6 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var camera = get_viewport().get_camera_3d()
 	move_vector = move_vector.rotated(Vector3.UP, camera.global_rotation.y)
 	
-	# Is the player not holding any direction?
-	var zero_move_input = frame_input.move_vector.is_equal_approx(Vector2.ZERO)
 	
 	#region Calculate Max Speed
 	var CURRENT_MAX_SPEED: float
@@ -85,7 +83,7 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	
 	## Calculate acceleration
 	#var move_accel : Vector3
-	#if zero_move_input:
+	#if frame_input.is_move_input_neutral:
 		## Drag Force
 		#move_accel = -velocity * VEC3_XZ * DRAG_ACCEL
 	#if current_state.is_skidding:
@@ -111,7 +109,7 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	
 	# Apply acceleration to velocity
 	var horizontal := velocity * VEC3_XZ
-	var direction := Vector3.FORWARD.rotated(Vector3.UP, current_rotation) if not zero_move_input else horizontal.normalized()
+	var direction := Vector3.FORWARD.rotated(Vector3.UP, current_rotation) if not frame_input.is_move_input_neutral else horizontal.normalized()
 	if not direction.is_zero_approx():
 		velocity.x = direction.x * current_speed
 		velocity.z = direction.z * current_speed
@@ -124,7 +122,7 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		horizontal = horizontal.normalized() * CURRENT_MAX_SPEED
 		velocity.x = horizontal.x
 		velocity.z = horizontal.z
-	elif zero_move_input and horizontal.length() < 6.0 / 60:
+	elif frame_input.is_move_input_neutral and horizontal.length() < 6.0 / 60:
 		velocity.x = 0
 		velocity.z = 0
 	
