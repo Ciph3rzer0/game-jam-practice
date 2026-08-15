@@ -30,11 +30,29 @@ var target_rotation: float
 func _ready() -> void:
 	assert(anim != null)
 
+
+## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Player Controller Order of Operations
+##  1. [      ] Collect Frame Input
+##  2. [ self ] Pre Process Movement
+##  3. [ self ] Collect Player State
+##  4. [      ] Process Abilities
+##  5. [ self ] Post Actor Processes
+##  6. [ self ] Apply Movement
+##  7. [      ] Camera Control
+## 
+
+# ----------------------------------------
+# Called **2nd** in player_controller
+# ----------------------------------------
 func collect_state(frame_input: PlayerFrameInput, delta: float) -> PlayerActorState:
 	current_state =  PlayerActorState.capture(self, current_state, frame_input, delta)
 	on_player_state_frame.emit(current_state)
 	return current_state
 
+# ----------------------------------------
+# Called **1st** in player_controller
+# ----------------------------------------
 func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var move_vector := Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y)
 	
@@ -139,6 +157,9 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	
 	move_and_slide()
 
+# ----------------------------------------
+# Called **3rd** in player_controller
+# ----------------------------------------
 func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var horizontal = velocity * VEC3_XZ
 	
