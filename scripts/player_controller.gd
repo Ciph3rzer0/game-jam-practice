@@ -13,7 +13,7 @@ func _physics_process(delta: float) -> void:
 	
 	#region Pre Process Movement & Collect Player State
 	actor.pre_process_input(frame_input, delta)
-	var state: PlayerActor.State = actor.collect_state(frame_input, delta)
+	var state: PlayerActorState = actor.collect_state(frame_input, delta)
 	#endregion
 	
 	#region Process Abilities

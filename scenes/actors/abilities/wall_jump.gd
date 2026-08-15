@@ -5,7 +5,7 @@ extends Ability
 
 ## Called once per physics tick, before actor.move_and_slide().
 ## Override to react to input and modify actor.velocity / state.
-func process_input(state: PlayerActor.State, delta: float) -> void:
+func process_input(state: PlayerActorState, delta: float) -> void:
 	super.process_input(state, delta)
 	
 	if !state.is_on_floor and state.is_on_wall and state.frame_input.consume_jump_press():

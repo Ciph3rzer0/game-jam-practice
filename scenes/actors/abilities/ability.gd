@@ -6,7 +6,7 @@ extends Node
 
 ## Called once per physics tick, before actor.move_and_slide().
 ## Override to react to input and modify actor.velocity / state.
-func process_input(_state: PlayerActor.State, _delta: float) -> void:
+func process_input(_state: PlayerActorState, _delta: float) -> void:
 	assert(_state.frame_input.tick == Engine.get_physics_frames(), "Processed wrong frame input")
 
 ### Called once per physics tick, after actor.move_and_slide().
