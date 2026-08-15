@@ -2,11 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://b5hvklm5vurpu" path="res://scenes/actors/mario/mario_actor.tscn" id="1_agfac"]
 [ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://scripts/player_controller.gd" id="1_k6jok"]
-[ext_resource type="Script" uid="uid://dwdl8sdmg14kv" path="res://scenes/actors/abilities/double_jump.gd" id="3_0ucrb"]
-[ext_resource type="Script" uid="uid://c5d3b4cmq68ck" path="res://scenes/actors/abilities/backflip_jump.gd" id="3_8e4yp"]
-[ext_resource type="Script" uid="uid://376srki7x84l" path="res://scenes/actors/abilities/wall_jump.gd" id="3_at6uk"]
-[ext_resource type="Script" uid="uid://dy1lh7prcvheb" path="res://scenes/actors/abilities/triple_jump.gd" id="3_pqs40"]
-[ext_resource type="Script" uid="uid://o8kphqmulfgh" path="res://scenes/actors/abilities/jump.gd" id="3_wwmcr"]
 [ext_resource type="Script" uid="uid://b30jksbyr8sxr" path="res://scenes/ui/player_input_display.gd" id="4_d4y46"]
 [ext_resource type="Script" uid="uid://che0sm5mh0euc" path="res://scenes/ui/player_state_display.gd" id="6_0ucrb"]
 [ext_resource type="PackedScene" uid="uid://bkxlxv6itygxv" path="res://scenes/camera/lakitu_camera.tscn" id="7_x758c"]
@@ -90,37 +85,12 @@ size = Vector3(5, 5, 1)
 [node name="CSGBakedCollisionShape3D" type="CollisionShape3D" parent="Wall4" unique_id=1291836341]
 shape = SubResource("ConcavePolygonShape3D_at6uk")
 
-[node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
-ACCELERATION = 6.0
-JUMP_VELOCITY = 6.0
-GRAVITY_ACCEL = 0.35
-GRAVITY_MULTI_FALLING = 1.4
-GRAVITY_MULTI_HOLDING_JUMP = 0.8
-JUMP_CHAIN_WINDOW = 0.5
-TURN_SPEED = 1.0
-LOW_SPEED_TURN_MULTI = 3
-
-[node name="PlayerController" type="Node3D" parent="Player" unique_id=130017454 node_paths=PackedStringArray("actor", "camera")]
+[node name="PlayerController" type="Node3D" parent="." unique_id=130017454 node_paths=PackedStringArray("actor", "camera")]
 script = ExtResource("1_k6jok")
-actor = NodePath("..")
-camera = NodePath("../../LakituCamera")
+actor = NodePath("../Player")
+camera = NodePath("../LakituCamera")
 
-[node name="BackflipJump" type="Node3D" parent="Player" unique_id=1273386055]
-script = ExtResource("3_8e4yp")
-JUMP_HEIGHT_MULTI = 1.5
-
-[node name="WallJump" type="Node3D" parent="Player" unique_id=1198430131]
-script = ExtResource("3_at6uk")
-
-[node name="TripleJump" type="Node3D" parent="Player" unique_id=930449821]
-script = ExtResource("3_pqs40")
-JUMP_HEIGHT_MULTI = 1.6
-
-[node name="DoubleJump" type="Node3D" parent="Player" unique_id=1475046652]
-script = ExtResource("3_0ucrb")
-
-[node name="SingleJump" type="Node3D" parent="Player" unique_id=1773954802]
-script = ExtResource("3_wwmcr")
+[node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
 
 [node name="LakituCamera" parent="." unique_id=902191612 node_paths=PackedStringArray("camera_target") instance=ExtResource("7_x758c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3520052, 0)
@@ -219,5 +189,5 @@ offset_top = 7.0
 offset_right = 71.0
 offset_bottom = 30.0
 
+[connection signal="on_player_input_frame" from="PlayerController" to="CanvasLayer/PlayerInputDisplay" method="_on_player_controller_on_player_input_frame"]
 [connection signal="on_player_state_frame" from="Player" to="CanvasLayer/PlayerStateDisplay" method="_on_player_on_player_state_frame"]
-[connection signal="on_player_input_frame" from="Player/PlayerController" to="CanvasLayer/PlayerInputDisplay" method="_on_player_controller_on_player_input_frame"]

@@ -1,29 +1,58 @@
 [gd_scene format=3 uid="uid://b5hvklm5vurpu"]
 
 [ext_resource type="PackedScene" uid="uid://ck20mmychrtqx" path="res://scenes/actors/minion/minion_actor.tscn" id="1_onrkg"]
+[ext_resource type="Script" uid="uid://c5d3b4cmq68ck" path="res://scenes/actors/abilities/backflip_jump.gd" id="2_2l7ln"]
 [ext_resource type="PackedScene" uid="uid://bhcbdqvhuio63" path="res://assets/mario.glb" id="2_i3pqv"]
+[ext_resource type="Script" uid="uid://376srki7x84l" path="res://scenes/actors/abilities/wall_jump.gd" id="3_g7puj"]
+[ext_resource type="Script" uid="uid://dy1lh7prcvheb" path="res://scenes/actors/abilities/triple_jump.gd" id="4_heejr"]
+[ext_resource type="Script" uid="uid://dwdl8sdmg14kv" path="res://scenes/actors/abilities/double_jump.gd" id="5_2fmhn"]
+[ext_resource type="Script" uid="uid://o8kphqmulfgh" path="res://scenes/actors/abilities/jump.gd" id="6_8k8yk"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_onrkg"]
 radius = 0.207
 
-[node name="Minion Actor" unique_id=1583713615 instance=ExtResource("1_onrkg")]
+[node name="Mario Actor" unique_id=1583713615 instance=ExtResource("1_onrkg")]
 collision_layer = 16
-JUMP_VELOCITY = 10.0
+ACCELERATION = 6.0
+JUMP_VELOCITY = 6.0
+GRAVITY_ACCEL = 0.35
+GRAVITY_MULTI_FALLING = 1.4
+GRAVITY_MULTI_HOLDING_JUMP = 0.8
+JUMP_CHAIN_WINDOW = 0.5
+TURN_SPEED = 1.0
+LOW_SPEED_TURN_MULTI = 3
 
-[node name="CollisionShape3D" parent="." index="0" unique_id=1745043601]
+[node name="BackflipJump" type="Node3D" parent="." index="0" unique_id=1642476821]
+script = ExtResource("2_2l7ln")
+JUMP_HEIGHT_MULTI = 1.5
+
+[node name="WallJump" type="Node3D" parent="." index="1" unique_id=1545620508]
+script = ExtResource("3_g7puj")
+
+[node name="TripleJump" type="Node3D" parent="." index="2" unique_id=1775995711]
+script = ExtResource("4_heejr")
+JUMP_HEIGHT_MULTI = 1.6
+
+[node name="DoubleJump" type="Node3D" parent="." index="3" unique_id=1426654127]
+script = ExtResource("5_2fmhn")
+
+[node name="SingleJump" type="Node3D" parent="." index="4" unique_id=1866930986]
+script = ExtResource("6_8k8yk")
+
+[node name="CollisionShape3D" parent="." index="5" unique_id=1745043601]
 shape = SubResource("CapsuleShape3D_onrkg")
 
-[node name="mario" parent="." index="1" unique_id=1967723681 instance=ExtResource("2_i3pqv")]
+[node name="mario" parent="." index="6" unique_id=1967723681 instance=ExtResource("2_i3pqv")]
 unique_name_in_owner = true
 transform = Transform3D(-0.8632414, 0, -7.546696e-08, 0, 0.8632414, 0, 7.546696e-08, 0, -0.8632414, -0.0023355484, 0.015335746, -0.00014910102)
 
-[node name="Capsule Body" parent="." index="2" unique_id=403132398]
+[node name="Capsule Body" parent="." index="7" unique_id=403132398]
 visible = false
 
-[node name="HeadPivot" parent="." index="3" unique_id=1936569135]
+[node name="HeadPivot" parent="." index="8" unique_id=1936569135]
 visible = false
 
 [node name="GoggleMesh" parent="HeadPivot" index="0" unique_id=1337120133]
 visible = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4" unique_id=1416362984]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="9" unique_id=1416362984]

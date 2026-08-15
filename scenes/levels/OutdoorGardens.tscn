@@ -7,11 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://dwojwuj7ccrle" path="res://assets/castle.glb" id="4_lmvdk"]
 [ext_resource type="Script" uid="uid://vayehuhq2tbv" path="res://scripts/kill_floor.gd" id="5_kill_floor"]
 [ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://scripts/player_controller.gd" id="7_005lq"]
-[ext_resource type="Script" uid="uid://c5d3b4cmq68ck" path="res://scenes/actors/abilities/backflip_jump.gd" id="8_nnw3y"]
-[ext_resource type="Script" uid="uid://376srki7x84l" path="res://scenes/actors/abilities/wall_jump.gd" id="9_hgfyg"]
-[ext_resource type="Script" uid="uid://dy1lh7prcvheb" path="res://scenes/actors/abilities/triple_jump.gd" id="10_abjri"]
-[ext_resource type="Script" uid="uid://dwdl8sdmg14kv" path="res://scenes/actors/abilities/double_jump.gd" id="11_0b3db"]
-[ext_resource type="Script" uid="uid://o8kphqmulfgh" path="res://scenes/actors/abilities/jump.gd" id="12_vhc42"]
 [ext_resource type="PackedScene" uid="uid://bkxlxv6itygxv" path="res://scenes/camera/lakitu_camera.tscn" id="13_wsi66"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pkwu5"]
@@ -123,7 +118,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_7vrny")
 [node name="terrain" parent="Environment" unique_id=785275101 instance=ExtResource("1_35sdb")]
 transform = Transform3D(-0.39373296, 0, -3.442123e-08, 0, 0.39373296, 0, 3.442123e-08, 0, -0.39373296, 12.404686, -8.367155, 87.597824)
 
-[node name="terrain" parent="Environment/terrain" index="0" unique_id=524274461]
+[node name="terrain" parent="Environment/terrain" index="0" unique_id=1429922893]
 transform = Transform3D(-235.52017, 0, 0, 0, 123.4033, 1.0788259e-05, 0, -1.0788259e-05, 123.4033, 3.2431946, 12, 166.82138)
 
 [node name="Trees" type="Node3D" parent="." unique_id=1052177369]
@@ -360,12 +355,10 @@ double_sided = false
 texture_filter = 0
 texture = ExtResource("1_do7fj")
 
-[node name="KillFloor" type="Area3D" parent="." unique_id=263804017 node_paths=PackedStringArray("player", "respawn_point")]
+[node name="KillFloor" type="Area3D" parent="." unique_id=263804017]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
 collision_layer = 0
 script = ExtResource("5_kill_floor")
-player = NodePath("")
-respawn_point = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="KillFloor" unique_id=933423912]
 shape = SubResource("BoxShape3D_kill_floor")
@@ -373,7 +366,7 @@ shape = SubResource("BoxShape3D_kill_floor")
 [node name="bridge" parent="." unique_id=2058189265 instance=ExtResource("3_7vrny")]
 transform = Transform3D(0.48932505, 0, 0, 0, 0.48932505, 0, 0, 0, 0.48932505, 2.2487528, -1.5695051, -47.0675)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="bridge/Cube_003" parent_id_path=PackedInt32Array(2058189265, 2113539699) index="0" unique_id=2104446893]
+[node name="StaticBody3D" type="StaticBody3D" parent="bridge/Cube_003" parent_id_path=PackedInt32Array(2058189265, 523864086) index="0" unique_id=2104446893]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="bridge/Cube_003/StaticBody3D" unique_id=1408706979]
 shape = SubResource("ConcavePolygonShape3D_lmvdk")
@@ -381,7 +374,7 @@ shape = SubResource("ConcavePolygonShape3D_lmvdk")
 [node name="castle" parent="." unique_id=453867699 instance=ExtResource("4_lmvdk")]
 transform = Transform3D(0.51063234, 0, 0, 0, 0.51063234, 0, 0, 0, 0.51063234, 2.4064837, -2.1888633, -47.993473)
 
-[node name="Cube" parent="castle" index="0" unique_id=748607479]
+[node name="Cube" parent="castle" index="0" unique_id=470542326]
 transform = Transform3D(9.544283, 0, 0, 0, 8.561864, 0, 0, 0, 7.536502, -9.299161, 9.944658, 1.6082611)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="castle/Cube" index="0" unique_id=934500516]
@@ -390,13 +383,19 @@ transform = Transform3D(9.544283, 0, 0, 0, 8.561864, 0, 0, 0, 7.536502, -9.29916
 transform = Transform3D(1, 0, 0, 0, 0.9999998, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("ConcavePolygonShape3D_35sdb")
 
-[node name="Cube_002" parent="castle" index="1" unique_id=105126235]
+[node name="Cube_002" parent="castle" index="1" unique_id=207385580]
 transform = Transform3D(6.0076456, 0, 0, 0, 6.0076456, 0, 0, 0, 0.22396606, 0, 22.14271, 9.163033)
 
-[node name="Cylinder_001" parent="castle" index="3" unique_id=1949083651]
+[node name="Cylinder_001" parent="castle" index="3" unique_id=1510044733]
 transform = Transform3D(0.80361915, 0, 0, 0, 1.110049, 0, 0, 0, 0.80361915, -36.844574, 28.411692, -10.638451)
 
+[node name="PlayerController" type="Node3D" parent="." unique_id=443377691 node_paths=PackedStringArray("actor", "camera")]
+script = ExtResource("7_005lq")
+actor = NodePath("../Player")
+camera = NodePath("../LakituCamera")
+
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("2_4or6s")]
+floor_constant_speed = true
 ACCELERATION = 6.0
 JUMP_VELOCITY = 6.0
 GRAVITY_ACCEL = 0.35
@@ -404,28 +403,6 @@ GRAVITY_MULTI_FALLING = 1.4
 GRAVITY_MULTI_HOLDING_JUMP = 0.8
 JUMP_CHAIN_WINDOW = 0.5
 TURN_SPEED = 1.5
-
-[node name="PlayerController" type="Node3D" parent="Player" unique_id=443377691 node_paths=PackedStringArray("actor", "camera")]
-script = ExtResource("7_005lq")
-actor = NodePath("..")
-camera = NodePath("../../LakituCamera")
-
-[node name="BackflipJump" type="Node3D" parent="Player" unique_id=1538209543]
-script = ExtResource("8_nnw3y")
-JUMP_HEIGHT_MULTI = 1.5
-
-[node name="WallJump" type="Node3D" parent="Player" unique_id=1902960777]
-script = ExtResource("9_hgfyg")
-
-[node name="TripleJump" type="Node3D" parent="Player" unique_id=67237267]
-script = ExtResource("10_abjri")
-JUMP_HEIGHT_MULTI = 1.6
-
-[node name="DoubleJump" type="Node3D" parent="Player" unique_id=161985184]
-script = ExtResource("11_0b3db")
-
-[node name="SingleJump" type="Node3D" parent="Player" unique_id=695479975]
-script = ExtResource("12_vhc42")
 
 [node name="LakituCamera" parent="." unique_id=902191612 node_paths=PackedStringArray("camera_target") instance=ExtResource("13_wsi66")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3520052, 0)
