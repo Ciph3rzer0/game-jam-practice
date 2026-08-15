@@ -396,13 +396,10 @@ camera = NodePath("../LakituCamera")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("2_4or6s")]
 floor_constant_speed = true
-ACCELERATION = 6.0
-JUMP_VELOCITY = 6.0
-GRAVITY_ACCEL = 0.35
-GRAVITY_MULTI_FALLING = 1.4
-GRAVITY_MULTI_HOLDING_JUMP = 0.8
-JUMP_CHAIN_WINDOW = 0.5
+MAX_MOVE_SPEED = 5.0
+ACCELERATION = 4.0
 TURN_SPEED = 1.5
+LOW_SPEED_TURN_MULTI = 2
 
 [node name="LakituCamera" parent="." unique_id=902191612 node_paths=PackedStringArray("camera_target") instance=ExtResource("13_wsi66")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3520052, 0)
