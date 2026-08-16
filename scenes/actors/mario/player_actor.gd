@@ -123,13 +123,13 @@ func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 
 ##
 ## Get 3D Movement Vector from 2D input and camera transform
-func get_movement_vector(move_vector_2d: Vector2) -> Vector3:
-	var move_vector := Vector3(move_vector_2d.x, 0, move_vector_2d.y)
+func get_movement_vector(movement_stick_input: Vector2) -> Vector3:
+	var vector_3d := Vector3(movement_stick_input.x, 0, movement_stick_input.y)
 	
 	# Translate movement based on camera view
 	var camera = get_viewport().get_camera_3d()
-	move_vector = move_vector.rotated(Vector3.UP, camera.global_rotation.y)
-	return move_vector
+	vector_3d = vector_3d.rotated(Vector3.UP, camera.global_rotation.y)
+	return vector_3d
 
 ##
 ## Get max speed based on actor state
@@ -153,13 +153,13 @@ func apply_acceleration(acceleration_percent: float, max_speed: float, delta: fl
 
 ##
 ## Apply turning to actor
-func apply_turning(move_vector: Vector3, delta: float):
-	if move_vector.is_zero_approx():
+func apply_turning(intended_movement_vector: Vector3, delta: float):
+	if intended_movement_vector.is_zero_approx():
 		return
 	
 	var multi = clampf((1.0 - current_state.horizontal_speed / MAX_MOVE_SPEED) * LOW_SPEED_TURN_MULTI, 1, LOW_SPEED_TURN_MULTI)
 
-	var target_turn_angle = Transform3D().looking_at(move_vector, Vector3.UP).basis.get_euler().y
+	var target_turn_angle = Transform3D().looking_at(intended_movement_vector, Vector3.UP).basis.get_euler().y
 	var old_rotation = current_state.current_rotation
 	current_state.current_rotation = rotate_toward(current_state.current_rotation, target_turn_angle, TURN_SPEED * multi * PI * delta)
 	#print(TURN_SPEED, "  -  ", TURN_SPEED * multi, " :: ", multi)
@@ -198,9 +198,9 @@ func apply_look_at():
 	
 	if !global_position.is_equal_approx(look_at_target):
 		
-		# if !move_vector.is_zero_approx() and current_state.is_skidding:
+		# if !intended_movement_vector.is_zero_approx() and current_state.is_skidding:
 		# 	# SKIDDING IS HARD TODO
-		# 	look_at(global_position + Vector3(frame_input.move_vector.x, 0, frame_input.move_vector.y), Vector3.UP)
+		# 	look_at(global_position + Vector3(frame_input.intended_movement_vector.x, 0, frame_input.intended_movement_vector.y), Vector3.UP)
 		look_at(look_at_target, Vector3.UP)
 
 ##

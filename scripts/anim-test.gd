@@ -61,7 +61,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var input_vector := Input.get_vector("pc_left", "pc_right", "pc_forward", "pc_backward", 0.2)
-	var move_vector := _get_camera_relative_move_vector(input_vector)
+	var intended_movement_vector := _get_camera_relative_movement_vector(input_vector)
 	var was_on_floor := actor.is_on_floor()
 	var horizontal_velocity := Vector3(actor.velocity.x, 0, actor.velocity.z)
 	
@@ -72,7 +72,7 @@ func _physics_process(delta: float) -> void:
 		move_accel = -horizontal_velocity * DRAG_ACCEL
 	else:
 		# Move Force
-		move_accel = move_vector * ACCELERATION
+		move_accel = intended_movement_vector * ACCELERATION
 	
 	actor.velocity += (move_accel) * delta
 
@@ -114,7 +114,7 @@ func _physics_process(delta: float) -> void:
 	_update_animation(is_on_floor_now)
 
 
-func _get_camera_relative_move_vector(input_vector: Vector2) -> Vector3:
+func _get_camera_relative_movement_vector(input_vector: Vector2) -> Vector3:
 	var current_camera := get_viewport().get_camera_3d()
 	if current_camera == null:
 		return Vector3(input_vector.x, 0, input_vector.y)
