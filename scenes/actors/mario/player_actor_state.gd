@@ -60,7 +60,7 @@ static func capture(player: PlayerActor, previous_state: PlayerActorState, frame
 	var player_horizontal_velocity = Vector2(player.velocity.x, player.velocity.z)
 	
 	# Normalize to get pure directions
-	var dot_val = player_horizontal_velocity.normalized().dot(frame_input.move_vector.normalized())
+	var dot_val = player_horizontal_velocity.normalized().dot(frame_input.movement_stick_input.normalized())
 	
 	if state.is_on_floor and dot_val < PlayerActor.SKIDDING_ANGLE:
 		state.is_skidding = true

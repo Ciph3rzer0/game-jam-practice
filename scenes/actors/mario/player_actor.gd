@@ -58,8 +58,8 @@ func _ready() -> void:
 #
 func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: float) -> PlayerActorState:
 	#region Pre Process Movement
-	var movement_input_3d = get_movement_vector(frame_input.move_vector)
-	var stick_activation_percent = frame_input.move_vector.length()
+	var movement_input_3d = get_movement_vector(frame_input.movement_stick_input)
+	var stick_activation_percent = frame_input.movement_stick_input.length()
 	var CURRENT_MAX_SPEED: float = get_max_speed()
 
 	apply_acceleration(stick_activation_percent, CURRENT_MAX_SPEED, delta)
