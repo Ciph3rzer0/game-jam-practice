@@ -22,17 +22,10 @@ func _physics_process(delta: float) -> void:
 	on_player_input_frame.emit(frame_input)
 	#endregion
 	
-	#region Pre Process Movement
-	actor.pre_process_input(frame_input, delta)
+	#region Pre Process Movement, Apply Movement, and Collect Player State
+	var state: PlayerActorState = actor.pre_process_input_and_collect_state(frame_input, delta)
 	#endregion
 
-	#region Apply Movement ???
-	actor.move_and_slide()
-	#endregion
-	
-	#region Collect Player State
-	var state: PlayerActorState = actor.collect_state(frame_input, delta)
-	#endregion
 
 	#region Process Abilities
 	var abilities: Array[Ability] = []

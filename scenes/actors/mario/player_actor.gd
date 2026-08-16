@@ -49,14 +49,6 @@ func _ready() -> void:
 ## 
 
 # ----------------------------------------
-# Called **2nd** in player_controller
-# ----------------------------------------
-func collect_state(frame_input: PlayerFrameInput, delta: float) -> PlayerActorState:
-	current_state =  PlayerActorState.capture(self, current_state, frame_input, delta)
-	on_player_state_frame.emit(current_state)
-	return current_state
-
-# ----------------------------------------
 # Called **1st** in player_controller
 # ----------------------------------------
 # 1. Get mario's input vector
@@ -64,10 +56,18 @@ func collect_state(frame_input: PlayerFrameInput, delta: float) -> PlayerActorSt
 # 3. Calculate turn speed reduction
 # 4. Modify current_speed based on target_speed
 #
-func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
+func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: float) -> PlayerActorState:
+	#region Pre Process Movement
 	var movement_input_3d = get_movement_vector(frame_input.move_vector)
 	var stick_activation_percent = frame_input.move_vector.length()
 	var CURRENT_MAX_SPEED: float = get_max_speed()
+
+	apply_acceleration(stick_activation_percent, CURRENT_MAX_SPEED, delta)
+	apply_turning(movement_input_3d, delta)
+	apply_acceleration_to_velocity(CURRENT_MAX_SPEED, frame_input.is_move_input_neutral)
+	apply_look_at()
+	apply_gravity(frame_input.jump_held)
+	#endregion
 	
 	#region Debug
 	if show_debug_vectors:
@@ -75,11 +75,15 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		input_debug.draw(global_position + Vector3.UP * 0.2, movement_input_3d, movement_input_3d.length())
 	#endregion
 	
-	apply_acceleration(stick_activation_percent, CURRENT_MAX_SPEED, delta)
-	apply_turning(movement_input_3d, delta)
-	apply_acceleration_to_velocity(CURRENT_MAX_SPEED, frame_input.is_move_input_neutral)
-	apply_look_at()
-	apply_gravity(frame_input.jump_held)
+	#region Apply Movement
+	move_and_slide()
+	#endregion
+
+	#region Collect Player State
+	current_state =  PlayerActorState.capture(self, current_state, frame_input, delta)
+	on_player_state_frame.emit(current_state)
+	return current_state
+	#endregion
 
 # ----------------------------------------
 # Called **3rd** in player_controller

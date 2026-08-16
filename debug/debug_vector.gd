@@ -28,6 +28,9 @@ func _ready() -> void:
 	visible = false
 
 func draw(origin: Vector3, direction: Vector3, length := 2.0) -> void:
+	if !is_inside_tree():
+		return
+	
 	if direction.is_zero_approx():
 		visible = false
 		return
