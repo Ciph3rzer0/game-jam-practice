@@ -58,7 +58,7 @@ func _ready() -> void:
 #
 func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: float) -> PlayerActorState:
 	#region Pre Process Movement
-	var movement_input_3d = get_movement_vector(frame_input.movement_stick_input)
+	var movement_input_3d = get_camera_relative_movement_vector(frame_input.movement_stick_input)
 	var stick_activation_percent = frame_input.movement_stick_input.length()
 	var CURRENT_MAX_SPEED: float = get_max_speed()
 
@@ -123,7 +123,7 @@ func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 
 ##
 ## Get 3D Movement Vector from 2D input and camera transform
-func get_movement_vector(movement_stick_input: Vector2) -> Vector3:
+func get_camera_relative_movement_vector(movement_stick_input: Vector2) -> Vector3:
 	var vector_3d := Vector3(movement_stick_input.x, 0, movement_stick_input.y)
 	
 	# Translate movement based on camera view
