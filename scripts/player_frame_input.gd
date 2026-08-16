@@ -64,3 +64,19 @@ func consume_crouch_held() -> bool:
 	crouch_held_consumed = true
 	
 	return crouch_held
+
+func consume_action_press() -> bool:
+	if action_pressed_consumed:
+		return false
+	
+	action_pressed_consumed = true
+	
+	return action_pressed
+
+func consume_action_held() -> bool:
+	if action_held_consumed:
+		return false
+	
+	action_held_consumed = true
+	
+	return action_held
