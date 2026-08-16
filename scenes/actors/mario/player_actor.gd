@@ -18,13 +18,25 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 @export var LOW_SPEED_TURN_MULTI := 6
 @export var SPEED_LOSS_WHILE_MOVING_MULTI := 2.0 
 
+@export var show_debug_vectors := true
+
 @onready var anim: AnimationPlayer = get_node("mario/AnimationPlayer") as AnimationPlayer
+@onready var velocity_debug := DebugVector.new()
+@onready var input_debug := DebugVector.new()
 
 var current_state: PlayerActorState = PlayerActorState.new()
 
 func _ready() -> void:
 	assert(anim != null)
-
+	velocity_debug.color = Color.RED
+	input_debug.color = Color.CYAN
+	
+	await get_tree().process_frame
+	get_tree().root.add_child(velocity_debug)
+	get_tree().root.add_child(input_debug)
+	velocity_debug.position.y = 1
+	input_debug.position.y = 1
+	
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## This Actor is controlled by PlayerController
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,6 +70,12 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	var movement_input_3d = get_movement_vector(frame_input.move_vector)
 	var stick_activation_percent = frame_input.move_vector.length()
 	var CURRENT_MAX_SPEED: float = get_max_speed()
+	
+	#region Debug
+	if show_debug_vectors:
+		velocity_debug.draw(global_position, velocity * VEC3_XZ, 2.0)
+		input_debug.draw(global_position, movement_input_3d, 2.0)
+	#endregion
 	
 	apply_acceleration(stick_activation_percent, CURRENT_MAX_SPEED, delta)
 	apply_turning(movement_input_3d, delta)
