@@ -34,8 +34,6 @@ func _ready() -> void:
 	await get_tree().process_frame
 	get_tree().root.add_child(velocity_debug)
 	get_tree().root.add_child(input_debug)
-	velocity_debug.position.y = 1
-	input_debug.position.y = 1
 	
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## This Actor is controlled by PlayerController
@@ -73,8 +71,8 @@ func pre_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	
 	#region Debug
 	if show_debug_vectors:
-		velocity_debug.draw(global_position, velocity * VEC3_XZ, 2.0)
-		input_debug.draw(global_position, movement_input_3d, 2.0)
+		velocity_debug.draw(global_position + Vector3.UP * 0.1, velocity * VEC3_XZ, (velocity * VEC3_XZ).length() / MAX_MOVE_SPEED * 2)
+		input_debug.draw(global_position + Vector3.UP * 0.2, movement_input_3d, movement_input_3d.length())
 	#endregion
 	
 	apply_acceleration(stick_activation_percent, CURRENT_MAX_SPEED, delta)
