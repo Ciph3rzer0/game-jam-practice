@@ -58,13 +58,15 @@ func _ready() -> void:
 #
 func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: float) -> PlayerActorState:
 	#region Pre Process Movement
-	var movement_input_3d = get_camera_relative_movement_vector(frame_input.movement_stick_input)
-	var stick_activation_percent = frame_input.movement_stick_input.length()
-	var CURRENT_MAX_SPEED: float = get_max_speed()
+	# Is the player not holding any move direction?
+	var is_move_input_neutral: bool = frame_input.movement_stick_input.is_zero_approx()
+	var target_movement_vector = get_camera_relative_movement_vector(frame_input.movement_stick_input)
+	var target_speed_percentage = frame_input.movement_stick_input.length()
+	var full_speed: float = get_max_speed()
 
-	apply_acceleration(stick_activation_percent, CURRENT_MAX_SPEED, delta)
-	apply_turning(movement_input_3d, delta)
-	apply_acceleration_to_velocity(CURRENT_MAX_SPEED, frame_input.is_move_input_neutral)
+	apply_acceleration(target_speed_percentage, full_speed, delta)
+	apply_turning(target_movement_vector, delta)
+	apply_acceleration_to_velocity(full_speed, is_move_input_neutral)
 	apply_look_at()
 	apply_gravity(frame_input.jump_held)
 	#endregion
@@ -72,7 +74,7 @@ func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: f
 	#region Debug
 	if show_debug_vectors:
 		velocity_debug.draw(global_position + Vector3.UP * 0.1, velocity * VEC3_XZ, (velocity * VEC3_XZ).length() / MAX_MOVE_SPEED * 2)
-		input_debug.draw(global_position + Vector3.UP * 0.2, movement_input_3d, movement_input_3d.length())
+		input_debug.draw(global_position + Vector3.UP * 0.2, target_movement_vector, target_movement_vector.length())
 	#endregion
 	
 	#region Apply Movement
