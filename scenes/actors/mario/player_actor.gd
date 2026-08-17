@@ -10,6 +10,7 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 @export var ACCELERATION := 12.0
 @export var DRAG_ACCEL := 4.0
 @export var JUMP_VELOCITY := 15.0
+@export var DIVE_VELOCITY_VECTOR := Vector3(0, 5, -10)
 @export var GRAVITY_ACCEL := 2.0
 @export var GRAVITY_MULTI_FALLING := 1.5
 @export var GRAVITY_MULTI_HOLDING_JUMP := 0.5
@@ -93,12 +94,12 @@ func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: f
 	
 	#region Apply Movement
 	move_and_slide()
-	#print("STATE: %-20splaying: %.2fs / %.2fs" % [
-		#animation_playback.get_current_node(),
-		#animation_playback.get_current_play_position(),
-		#animation_playback.get_current_length(),
-		#])
-	#print(animation_tree.tree_root.get_node_list())
+	print("STATE: %-20splaying: %.2fs / %.2fs" % [
+		animation_playback.get_current_node(),
+		animation_playback.get_current_play_position(),
+		animation_playback.get_current_length(),
+		])
+	print(animation_tree.tree_root.get_node_list())
 	#endregion
 	
 	#region Collect Player State

@@ -44,6 +44,8 @@ nodes/asdgasgd/node = SubResource("AnimationNodeTransition_xbomg")
 nodes/asdgasgd/position = Vector2(-13.333333, 440)
 node_connections = [&"output", 0, &"OneShot", &"OneShot", 0, &"Transition", &"OneShot", 1, &"StateMachine", &"asdgasgd", 0, &"Animation", &"asdgasgd", 1, &"Animation 2"]
 
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_xbomg"]
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xbomg"]
 animation = &"run"
 
@@ -53,7 +55,16 @@ animation = &"tiptoe"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_805tk"]
 animation = &"walk"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2f8wu"]
+animation = &"quick-turn"
+use_custom_timeline = true
+timeline_length = 2.0
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
 [sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_fet2q"]
+snap = 0.04
 blend_point_0/node = SubResource("AnimationNodeAnimation_xbomg")
 blend_point_0/pos = 0.90000004
 blend_point_0/name = &"run"
@@ -61,8 +72,11 @@ blend_point_1/node = SubResource("AnimationNodeAnimation_4nipl")
 blend_point_1/pos = 0.1
 blend_point_1/name = &"tiptoe"
 blend_point_2/node = SubResource("AnimationNodeAnimation_805tk")
-blend_point_2/pos = 0.6
+blend_point_2/pos = 0.4
 blend_point_2/name = &"walk"
+blend_point_3/node = SubResource("AnimationNodeAnimation_2f8wu")
+blend_point_3/pos = 0.0
+blend_point_3/name = &"quick-turn"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7p2dh"]
 animation = &"backflip"
@@ -78,6 +92,20 @@ animation = &"crawling"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dscyf"]
 animation = &"crouching"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w1e3h"]
+animation = &"dive-flip"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w07g4"]
+animation = &"dive"
+use_custom_timeline = true
+timeline_length = 1.0
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3hkse"]
+animation = &"edge-climbup"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d6g5v"]
 animation = &"idle"
 
@@ -92,6 +120,14 @@ animation = &"jump-combo-3-start"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kb5nh"]
 animation = &"jump-combo-3"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vvv2x"]
+animation = &"dive"
+use_custom_timeline = true
+timeline_length = 3.0
+stretch_time_scale = true
+start_offset = 2.0
+loop_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_11y74"]
 advance_mode = 2
@@ -157,10 +193,28 @@ advance_expression = "!is_crouching"
 advance_mode = 2
 advance_condition = &"is_crouching"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pwqsj"]
+advance_mode = 2
+advance_condition = &"is_grounded"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q0dx6"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lm6fr"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_khrac"]
+advance_mode = 2
+advance_condition = &"is_not_moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_805tk"]
+switch_mode = 2
+advance_mode = 2
+
 [resource]
 states/Airborn/node = SubResource("AnimationNodeBlendTree_w1e3h")
-states/Airborn/position = Vector2(1010.3333, 304.3333)
-states/End/position = Vector2(1227.3334, 196.2222)
+states/Airborn/position = Vector2(1418.3333, 268.99997)
+states/BlendTree/node = SubResource("AnimationNodeBlendTree_xbomg")
+states/BlendTree/position = Vector2(182.66666, -76)
+states/End/position = Vector2(1504, 68.88886)
 states/MoveBlend1D/node = SubResource("AnimationNodeBlendSpace1D_fet2q")
 states/MoveBlend1D/position = Vector2(577, 195.66666)
 states/Start/position = Vector2(106.66669, 128.66667)
@@ -170,6 +224,12 @@ states/crawling/node = SubResource("AnimationNodeAnimation_w223i")
 states/crawling/position = Vector2(83.66666, 430.25925)
 states/crouching/node = SubResource("AnimationNodeAnimation_dscyf")
 states/crouching/position = Vector2(275.4444, 429.8889)
+states/dive/node = SubResource("AnimationNodeAnimation_w07g4")
+states/dive/position = Vector2(1094.3333, -15.358032)
+states/dive-rollout/node = SubResource("AnimationNodeAnimation_w1e3h")
+states/dive-rollout/position = Vector2(1391.4443, -16.729774)
+states/edge-climbup/node = SubResource("AnimationNodeAnimation_3hkse")
+states/edge-climbup/position = Vector2(1166, 194.80244)
 states/idle/node = SubResource("AnimationNodeAnimation_d6g5v")
 states/idle/position = Vector2(274.66663, 196.37035)
 states/jump-combo-1/node = SubResource("AnimationNodeAnimation_co37i")
@@ -180,5 +240,7 @@ states/jump-combo-3/node = SubResource("AnimationNodeAnimation_kb5nh")
 states/jump-combo-3/position = Vector2(950.1604, -94.74121)
 states/jump-combo-3-start/node = SubResource("AnimationNodeAnimation_pwrkk")
 states/jump-combo-3-start/position = Vector2(948.9999, -192.99998)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_11y74"), "idle", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_1ecsl"), "MoveBlend1D", "idle", SubResource("AnimationNodeStateMachineTransition_7p2dh"), "jump-combo-3-start", "jump-combo-3", SubResource("AnimationNodeStateMachineTransition_w07g4"), "jump-combo-2", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_3hkse"), "jump-combo-3", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_2f8wu"), "jump-combo-3-start", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_qbgd7"), "jump-combo-1", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_vvv2x"), "idle", "jump-combo-1", SubResource("AnimationNodeStateMachineTransition_xbomg"), "MoveBlend1D", "jump-combo-1", SubResource("AnimationNodeStateMachineTransition_d6g5v"), "idle", "crouching", SubResource("AnimationNodeStateMachineTransition_w1e3h"), "crouching", "backflip", SubResource("AnimationNodeStateMachineTransition_co37i"), "backflip", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_okv8i"), "crouching", "crawling", SubResource("AnimationNodeStateMachineTransition_pwrkk"), "crawling", "crouching", SubResource("AnimationNodeStateMachineTransition_kb5nh"), "crouching", "idle", SubResource("AnimationNodeStateMachineTransition_jeaka"), "MoveBlend1D", "crouching", SubResource("AnimationNodeStateMachineTransition_4nipl")]
-graph_offset = Vector2(-385, 44)
+states/sliding/node = SubResource("AnimationNodeAnimation_vvv2x")
+states/sliding/position = Vector2(1229.6666, -14.905354)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_11y74"), "idle", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_1ecsl"), "MoveBlend1D", "idle", SubResource("AnimationNodeStateMachineTransition_7p2dh"), "jump-combo-3-start", "jump-combo-3", SubResource("AnimationNodeStateMachineTransition_w07g4"), "jump-combo-2", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_3hkse"), "jump-combo-3", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_2f8wu"), "jump-combo-3-start", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_qbgd7"), "jump-combo-1", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_vvv2x"), "idle", "jump-combo-1", SubResource("AnimationNodeStateMachineTransition_xbomg"), "MoveBlend1D", "jump-combo-1", SubResource("AnimationNodeStateMachineTransition_d6g5v"), "idle", "crouching", SubResource("AnimationNodeStateMachineTransition_w1e3h"), "crouching", "backflip", SubResource("AnimationNodeStateMachineTransition_co37i"), "backflip", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_okv8i"), "crouching", "crawling", SubResource("AnimationNodeStateMachineTransition_pwrkk"), "crawling", "crouching", SubResource("AnimationNodeStateMachineTransition_kb5nh"), "crouching", "idle", SubResource("AnimationNodeStateMachineTransition_jeaka"), "MoveBlend1D", "crouching", SubResource("AnimationNodeStateMachineTransition_4nipl"), "dive", "sliding", SubResource("AnimationNodeStateMachineTransition_pwqsj"), "MoveBlend1D", "dive", SubResource("AnimationNodeStateMachineTransition_q0dx6"), "sliding", "dive-rollout", SubResource("AnimationNodeStateMachineTransition_lm6fr"), "sliding", "edge-climbup", SubResource("AnimationNodeStateMachineTransition_khrac"), "edge-climbup", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_805tk")]
+graph_offset = Vector2(-158, -206)
