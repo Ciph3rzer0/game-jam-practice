@@ -99,6 +99,9 @@ CAMERA_HEIGHT = 2.21
 CAMERA_SPEED = 3.0
 ORBIT_SPEED = 0.56
 
+[node name="LakituCam" parent="LakituCamera/SpringArm3D" parent_id_path=PackedInt32Array(902191612, 183062279) index="0" unique_id=689445914]
+current = true
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1972452837]
 
 [node name="PlayerInputDisplay" type="Panel" parent="CanvasLayer" unique_id=344645845]
@@ -191,3 +194,5 @@ offset_bottom = 30.0
 
 [connection signal="on_player_input_frame" from="PlayerController" to="CanvasLayer/PlayerInputDisplay" method="_on_player_controller_on_player_input_frame"]
 [connection signal="on_player_state_frame" from="Player" to="CanvasLayer/PlayerStateDisplay" method="_on_player_on_player_state_frame"]
+
+[editable path="LakituCamera"]

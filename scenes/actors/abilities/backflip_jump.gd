@@ -16,6 +16,6 @@ func process_input(state: PlayerActorState, delta: float) -> void:
 		state.is_crawling = false
 		actor.velocity.y = actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI
 		
-		await get_tree().process_frame
-		actor.anim.speed_scale = 1.5
-		actor.anim.play(&"backflip")
+		# await get_tree().process_frame
+		# actor.anim.speed_scale = 1.5
+		# actor.anim.play(&"backflip")

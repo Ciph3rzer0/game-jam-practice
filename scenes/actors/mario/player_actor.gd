@@ -100,28 +100,28 @@ func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 	else:
 		CURRENT_MAX_SPEED = MAX_MOVE_SPEED
 	
-	if current_state.is_crouching:
-		anim.speed_scale = 1
-		anim.play(&"crouching")
-	elif current_state.is_crawling:
-		anim.speed_scale = 1
-		anim.play(&"crawling")
-	elif current_state.is_skidding:
-		anim.speed_scale = 1
-		anim.play(&"quick-turn")
-	elif is_on_floor():
-		if horizontal.is_zero_approx():
-			anim.speed_scale = 1
-			anim.play(&"idle")
-		elif velocity.length() < CURRENT_MAX_SPEED * 0.2:
-			anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 3
-			anim.play(&"tiptoe")
-		elif velocity.length() < CURRENT_MAX_SPEED * 0.7:
-			anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 3
-			anim.play(&"walk")
-		else:
-			anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 0.9
-			anim.play(&"run")
+	# if current_state.is_crouching:
+	# 	anim.speed_scale = 1
+	# 	anim.play(&"crouching")
+	# elif current_state.is_crawling:
+	# 	anim.speed_scale = 1
+	# 	anim.play(&"crawling")
+	# elif current_state.is_skidding:
+	# 	anim.speed_scale = 1
+	# 	anim.play(&"quick-turn")
+	# elif is_on_floor():
+	# 	if horizontal.is_zero_approx():
+	# 		anim.speed_scale = 1
+	# 		anim.play(&"idle")
+	# 	elif velocity.length() < CURRENT_MAX_SPEED * 0.2:
+	# 		anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 3
+	# 		anim.play(&"tiptoe")
+	# 	elif velocity.length() < CURRENT_MAX_SPEED * 0.7:
+	# 		anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 3
+	# 		anim.play(&"walk")
+	# 	else:
+	# 		anim.speed_scale = (velocity.length() / CURRENT_MAX_SPEED) * 0.9
+	# 		anim.play(&"run")
 
 ##
 ## Get 3D Movement Vector from 2D input and camera transform

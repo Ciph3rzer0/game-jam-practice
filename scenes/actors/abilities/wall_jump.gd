@@ -20,6 +20,6 @@ func process_input(state: PlayerActorState, delta: float) -> void:
 		state.consecutive_jumps = 1
 		actor.velocity = actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI * jump_dir
 		
-		await get_tree().process_frame
-		actor.anim.speed_scale = 1
-		actor.anim.play(&"wall-kick")
+		# await get_tree().process_frame
+		# actor.anim.speed_scale = 1
+		# actor.anim.play(&"wall-kick")
