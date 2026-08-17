@@ -1,0 +1,46 @@
+[gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://kn7jaj1vk68e"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xbomg"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4nipl"]
+animation = &"tiptoe"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_805tk"]
+animation = &"walk"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_fet2q"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_xbomg")
+blend_point_0/pos = 0.90000004
+blend_point_0/name = &"run"
+blend_point_1/node = SubResource("AnimationNodeAnimation_4nipl")
+blend_point_1/pos = 0.0
+blend_point_1/name = &"tiptoe"
+blend_point_2/node = SubResource("AnimationNodeAnimation_805tk")
+blend_point_2/pos = 0.4
+blend_point_2/name = &"walk"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d6g5v"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_11y74"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1ecsl"]
+advance_mode = 2
+advance_condition = &"is_moving"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7p2dh"]
+xfade_time = 0.5
+switch_mode = 1
+advance_mode = 2
+advance_condition = &"is_not_moving"
+
+[resource]
+states/MoveBlend1D/node = SubResource("AnimationNodeBlendSpace1D_fet2q")
+states/MoveBlend1D/position = Vector2(577, 195.66666)
+states/Start/position = Vector2(236.00002, 206.66667)
+states/idle/node = SubResource("AnimationNodeAnimation_d6g5v")
+states/idle/position = Vector2(351.33328, 38.666656)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_11y74"), "idle", "MoveBlend1D", SubResource("AnimationNodeStateMachineTransition_1ecsl"), "MoveBlend1D", "idle", SubResource("AnimationNodeStateMachineTransition_7p2dh")]
+graph_offset = Vector2(-193, -137)

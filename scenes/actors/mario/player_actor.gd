@@ -24,6 +24,8 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 @onready var velocity_debug := DebugVector.new()
 @onready var input_debug := DebugVector.new()
 
+@onready var animation_tree: AnimationTree = $AnimationTree
+
 var current_state: PlayerActorState = PlayerActorState.new()
 
 func _ready() -> void:
@@ -63,7 +65,15 @@ func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: f
 	var target_movement_vector = get_camera_relative_movement_vector(frame_input.movement_stick_input)
 	var target_speed_percentage = frame_input.movement_stick_input.length()
 	var full_speed: float = get_max_speed()
-
+	
+	
+	#animation_tree['parameters/Blend Run Into Idle/blend_amount'] = 0 if (velocity * VEC3_XZ).is_zero_approx() else 1
+	#animation_tree['parameters/Move Blend/blend_position'] = target_speed_percentage
+	animation_tree['parameters/conditions/is_moving'] = !(velocity * VEC3_XZ).is_zero_approx()
+	animation_tree['parameters/conditions/is_not_moving'] = (velocity * VEC3_XZ).is_zero_approx()
+	
+	animation_tree['parameters/MoveBlend1D/blend_position'] = target_speed_percentage
+	
 	apply_acceleration(target_speed_percentage, full_speed, delta)
 	apply_turning(target_movement_vector, delta)
 	apply_acceleration_to_velocity(full_speed, is_move_input_neutral)
