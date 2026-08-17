@@ -13,7 +13,5 @@ func process_input(_state: PlayerActorState, _delta: float) -> void:
 		_state.last_jump = 0.0
 		_state.consecutive_jumps += 1
 		actor.velocity.y = actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI
-		
-		# await get_tree().process_frame
-		# actor.anim.speed_scale = 1
-		# actor.anim.play(&"jump-combo-1")
+		_state.is_on_floor = false
+		actor.play_animation("jump-combo-1")

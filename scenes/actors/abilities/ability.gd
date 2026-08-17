@@ -1,7 +1,7 @@
 @abstract class_name Ability
 extends Node
 
-@onready var actor: CharacterBody3D = get_parent() as CharacterBody3D
+@onready var actor: PlayerActor = get_parent() as PlayerActor
 @export var enabled := true
 
 ## Called once per physics tick, before actor.move_and_slide().

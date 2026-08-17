@@ -25,8 +25,20 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 @onready var input_debug := DebugVector.new()
 
 @onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_playback: AnimationNodeStateMachinePlayback = animation_tree["parameters/playback"]
+
 
 var current_state: PlayerActorState = PlayerActorState.new()
+
+func play_animation(anim_name: StringName):
+	print("Transition to ", anim_name)
+	#print('is_grounded: ', is_on_floor())
+	animation_playback.travel(anim_name)
+	#print("TRANSITION STATE NOW: %-20splaying: %.2fs / %.2fs" % [
+		#animation_playback.get_current_node(),
+		#animation_playback.get_current_play_position(),
+		#animation_playback.get_current_length(),
+	#])
 
 func _ready() -> void:
 	assert(anim != null)
@@ -66,14 +78,6 @@ func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: f
 	var target_speed_percentage = frame_input.movement_stick_input.length()
 	var full_speed: float = get_max_speed()
 	
-	
-	#animation_tree['parameters/Blend Run Into Idle/blend_amount'] = 0 if (velocity * VEC3_XZ).is_zero_approx() else 1
-	#animation_tree['parameters/Move Blend/blend_position'] = target_speed_percentage
-	animation_tree['parameters/conditions/is_moving'] = !(velocity * VEC3_XZ).is_zero_approx()
-	animation_tree['parameters/conditions/is_not_moving'] = (velocity * VEC3_XZ).is_zero_approx()
-	
-	animation_tree['parameters/MoveBlend1D/blend_position'] = target_speed_percentage
-	
 	apply_acceleration(target_speed_percentage, full_speed, delta)
 	apply_turning(target_movement_vector, delta)
 	apply_acceleration_to_velocity(full_speed, is_move_input_neutral)
@@ -89,14 +93,20 @@ func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: f
 	
 	#region Apply Movement
 	move_and_slide()
+	#print("STATE: %-20splaying: %.2fs / %.2fs" % [
+		#animation_playback.get_current_node(),
+		#animation_playback.get_current_play_position(),
+		#animation_playback.get_current_length(),
+		#])
+	#print(animation_tree.tree_root.get_node_list())
 	#endregion
-
+	
 	#region Collect Player State
 	current_state =  PlayerActorState.capture(self, current_state, frame_input, delta)
 	on_player_state_frame.emit(current_state)
 	return current_state
 	#endregion
-
+	
 # ----------------------------------------
 # Called **3rd** in player_controller
 # ----------------------------------------
@@ -109,6 +119,20 @@ func post_process_input(frame_input: PlayerFrameInput, delta: float) -> void:
 		CURRENT_MAX_SPEED = MAX_MOVE_SPEED / 4.0
 	else:
 		CURRENT_MAX_SPEED = MAX_MOVE_SPEED
+	
+	
+	
+	
+	#animation_tree['parameters/Blend Run Into Idle/blend_amount'] = 0 if (velocity * VEC3_XZ).is_zero_approx() else 1
+	#animation_tree['parameters/Move Blend/blend_position'] = target_speed_percentage
+	animation_tree['parameters/conditions/is_moving'] = !(velocity * VEC3_XZ).is_zero_approx()
+	animation_tree['parameters/conditions/is_not_moving'] = (velocity * VEC3_XZ).is_zero_approx()
+	animation_tree['parameters/conditions/is_grounded'] = current_state.is_on_floor
+	
+	animation_tree['parameters/conditions/is_crouching'] = current_state.is_crouching
+	#animation_tree['parameters/conditions/is_not_crouching'] = !current_state.is_crouching
+	
+	animation_tree['parameters/MoveBlend1D/blend_position'] = current_state.target_horizontal_speed / CURRENT_MAX_SPEED
 	
 	# if current_state.is_crouching:
 	# 	anim.speed_scale = 1
