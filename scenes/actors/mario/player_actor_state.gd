@@ -1,6 +1,18 @@
 class_name PlayerActorState extends RefCounted
 var frame_input: PlayerFrameInput
+
+var action: Action
+
+var is_stationary: float
+var is_moving: float
+var is_airborn: float
 var is_on_floor: bool
+var is_swimming: float
+var is_diving: float
+var is_on_pole: float
+var is_idle: float
+var is_attacking: float
+
 var is_on_wall: bool
 var is_on_ceiling: bool
 
