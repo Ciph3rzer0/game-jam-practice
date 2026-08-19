@@ -9,11 +9,5 @@ func process_input(state: PlayerActorState, delta: float) -> void:
 	super.process_input(state, delta)
 	
 	if state.is_on_floor and state.is_crouching and state.frame_input.consume_jump_press():
-		state.time_on_floor = 0
-		state.last_jump = 0.0
-		state.consecutive_jumps += 1
-		state.is_crouching = false
-		state.is_crawling = false
-		actor.velocity.y = actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI
-		state.is_on_floor = false
-		actor.play_animation("backflip")
+		var jump_vector = Vector3.UP * actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI
+		actor.do_jump(jump_vector, &"backflip", 2)

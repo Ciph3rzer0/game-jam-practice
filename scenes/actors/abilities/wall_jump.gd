@@ -15,11 +15,5 @@ func process_input(state: PlayerActorState, delta: float) -> void:
 		
 		var jump_dir := (wall_normal + Vector3.UP).normalized()
 		
-		state.time_on_floor = 0
-		state.last_jump = 0.0
-		state.consecutive_jumps = 1
-		actor.velocity = actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI * jump_dir
-		
-		# await get_tree().process_frame
-		# actor.anim.speed_scale = 1
-		# actor.anim.play(&"wall-kick")
+		var jump_vector = actor.JUMP_VELOCITY * JUMP_HEIGHT_MULTI * jump_dir
+		actor.do_absolute_jump(jump_vector, &"wall-jump", 1)

@@ -1,16 +1,11 @@
-class_name DiveAbility
+class_name Dive
 extends Ability
 
 ## Called once per physics tick, before actor.move_and_slide().
 ## Override to react to input and modify actor.velocity / state.
-func process_input(_state: PlayerActorState, _delta: float) -> void:
-	super.process_input(_state, _delta)
+func process_input(state: PlayerActorState, delta: float) -> void:
+	super.process_input(state, delta)
 	
-	if _state.is_on_floor and _state.horizontal_speed > 1.0 and _state.frame_input.consume_action_press():
-		print("dive")
-		_state.time_on_floor = 0
-		_state.last_jump = 0.0
-		_state.consecutive_jumps += 1
-		actor.velocity = actor.DIVE_VELOCITY_VECTOR.rotated(Vector3.UP, _state.current_rotation)
-		_state.is_on_floor = false
-		actor.play_animation("dive")
+	if state.is_on_floor and state.horizontal_speed > 1.0 and state.frame_input.consume_action_press():
+		var jump_vector = actor.DIVE_VELOCITY_VECTOR.rotated(Vector3.UP, state.current_rotation)
+		actor.do_jump(jump_vector, &"dive", 0)

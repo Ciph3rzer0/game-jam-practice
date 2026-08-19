@@ -92,6 +92,11 @@ camera = NodePath("../LakituCamera")
 
 [node name="Player" parent="." unique_id=1583713615 instance=ExtResource("1_agfac")]
 
+[node name="Skeleton3D" parent="Player/mario/rig" parent_id_path=PackedInt32Array(1583713615, 1967723681, 1988901565) index="0" unique_id=114265480]
+
+[node name="AnimationTree" parent="Player" index="12" unique_id=1940076159]
+active = false
+
 [node name="LakituCamera" parent="." unique_id=902191612 node_paths=PackedStringArray("camera_target") instance=ExtResource("7_x758c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3520052, 0)
 camera_target = NodePath("../Player")
@@ -100,7 +105,32 @@ CAMERA_SPEED = 3.0
 ORBIT_SPEED = 0.56
 
 [node name="LakituCam" parent="LakituCamera/SpringArm3D" parent_id_path=PackedInt32Array(902191612, 183062279) index="0" unique_id=689445914]
+cull_mask = 524287
 current = true
+
+[node name="LakituCloud" parent="LakituCamera/SpringArm3D/LakituCam/LakituPlaceholder" parent_id_path=PackedInt32Array(902191612, 810541226) index="0" unique_id=1022779127]
+cast_shadow = 3
+
+[node name="LakituCloud2" parent="LakituCamera/SpringArm3D/LakituCam/LakituPlaceholder" parent_id_path=PackedInt32Array(902191612, 810541226) index="1" unique_id=533651079]
+cast_shadow = 3
+
+[node name="LakituCloud3" parent="LakituCamera/SpringArm3D/LakituCam/LakituPlaceholder" parent_id_path=PackedInt32Array(902191612, 810541226) index="2" unique_id=545283915]
+cast_shadow = 3
+
+[node name="LakituCloud4" parent="LakituCamera/SpringArm3D/LakituCam/LakituPlaceholder" parent_id_path=PackedInt32Array(902191612, 810541226) index="3" unique_id=1263325576]
+cast_shadow = 3
+
+[node name="LakituCloud5" parent="LakituCamera/SpringArm3D/LakituCam/LakituPlaceholder" parent_id_path=PackedInt32Array(902191612, 810541226) index="4" unique_id=1614517662]
+cast_shadow = 3
+
+[node name="LakituCloud7" parent="LakituCamera/SpringArm3D/LakituCam/LakituPlaceholder" parent_id_path=PackedInt32Array(902191612, 810541226) index="5" unique_id=1716819701]
+cast_shadow = 3
+
+[node name="LakituCloud6" parent="LakituCamera/SpringArm3D/LakituCam/LakituPlaceholder" parent_id_path=PackedInt32Array(902191612, 810541226) index="6" unique_id=920720986]
+cast_shadow = 3
+
+[node name="CameraTargetVerticalBox" parent="LakituCamera/SpringArm3D/LakituCam/LakituPlaceholder" parent_id_path=PackedInt32Array(902191612, 810541226) index="7" unique_id=1034813259]
+cast_shadow = 3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1972452837]
 
@@ -195,4 +225,6 @@ offset_bottom = 30.0
 [connection signal="on_player_input_frame" from="PlayerController" to="CanvasLayer/PlayerInputDisplay" method="_on_player_controller_on_player_input_frame"]
 [connection signal="on_player_state_frame" from="Player" to="CanvasLayer/PlayerStateDisplay" method="_on_player_on_player_state_frame"]
 
+[editable path="Player"]
+[editable path="Player/mario"]
 [editable path="LakituCamera"]

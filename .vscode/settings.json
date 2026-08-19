@@ -52,5 +52,8 @@
 		"Lakitu",
 		"LONGJUMP",
 		"SIDEFLIP"
-	]
+	],
+	"files.exclude": {
+		"**/*.uid": true
+	}
 }

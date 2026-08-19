@@ -11,6 +11,7 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 @export var DRAG_ACCEL := 4.0
 @export var JUMP_VELOCITY := 15.0
 @export var DIVE_VELOCITY_VECTOR := Vector3(0, 5, -10)
+@export var DIVE_ROLLOUT_VELOCITY_VECTOR := Vector3(0, 7, -2)
 @export var GRAVITY_ACCEL := 2.0
 @export var GRAVITY_MULTI_FALLING := 1.5
 @export var GRAVITY_MULTI_HOLDING_JUMP := 0.5
@@ -21,7 +22,6 @@ const SKIDDING_ANGLE := cos(deg_to_rad(160))
 
 @export var show_debug_vectors := true
 
-@onready var anim: AnimationPlayer = get_node("mario/AnimationPlayer") as AnimationPlayer
 @onready var velocity_debug := DebugVector.new()
 @onready var input_debug := DebugVector.new()
 
@@ -42,7 +42,10 @@ func play_animation(anim_name: StringName):
 	#])
 
 func _ready() -> void:
-	assert(anim != null)
+	assert(animation_tree != null)
+	assert(animation_playback != null)
+	animation_tree.active = true
+
 	velocity_debug.color = Color.RED
 	input_debug.color = Color.CYAN
 	
@@ -94,12 +97,11 @@ func pre_process_input_and_collect_state(frame_input: PlayerFrameInput, delta: f
 	
 	#region Apply Movement
 	move_and_slide()
-	print("STATE: %-20splaying: %.2fs / %.2fs" % [
-		animation_playback.get_current_node(),
-		animation_playback.get_current_play_position(),
-		animation_playback.get_current_length(),
-		])
-	print(animation_tree.tree_root.get_node_list())
+	# print("STATE: %-20splaying: %.2fs / %.2fs" % [
+	# 	animation_playback.get_current_node(),
+	# 	animation_playback.get_current_play_position(),
+	# 	animation_playback.get_current_length(),
+	# ])
 	#endregion
 	
 	#region Collect Player State
@@ -254,3 +256,18 @@ func apply_gravity(is_jump_held: bool):
 	
 	# Apply Gravity
 	velocity.y -= gravity_to_apply
+
+
+func do_jump(velocity_vector: Vector3, animation_state: StringName, consecutive_jumps := 1):
+	do_absolute_jump(velocity + velocity_vector, animation_state, consecutive_jumps)
+
+func do_absolute_jump(velocity_vector: Vector3, animation_state: StringName, consecutive_jumps := 1):
+	velocity = velocity_vector
+	play_animation(animation_state)
+
+	current_state.time_on_floor = 0
+	current_state.last_jump = 0.0
+	current_state.consecutive_jumps = consecutive_jumps
+	current_state.is_on_floor = false
+	current_state.is_crouching = false
+	current_state.is_crawling = false
