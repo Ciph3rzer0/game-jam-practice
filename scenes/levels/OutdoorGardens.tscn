@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://bmjdsbd8a0we1"]
 
-[ext_resource type="PackedScene" uid="uid://cb7u8pb6gd420" path="res://assets/terrain.glb" id="1_35sdb"]
-[ext_resource type="Texture2D" uid="uid://dh71secl7g8px" path="res://assets/tree-card2.png" id="1_do7fj"]
+[ext_resource type="PackedScene" uid="uid://cb7u8pb6gd420" path="res://assets/environment/terrain.glb" id="1_35sdb"]
+[ext_resource type="Texture2D" uid="uid://dh71secl7g8px" path="res://assets/environment/tree-card2.png" id="1_do7fj"]
 [ext_resource type="PackedScene" uid="uid://b5hvklm5vurpu" path="res://scenes/actors/mario/mario_actor.tscn" id="2_4or6s"]
-[ext_resource type="PackedScene" uid="uid://bpn488mrcm6xy" path="res://assets/bridge.glb" id="3_7vrny"]
-[ext_resource type="PackedScene" uid="uid://dwojwuj7ccrle" path="res://assets/castle.glb" id="4_lmvdk"]
+[ext_resource type="PackedScene" uid="uid://bpn488mrcm6xy" path="res://assets/environment/bridge.glb" id="3_7vrny"]
+[ext_resource type="PackedScene" uid="uid://dwojwuj7ccrle" path="res://assets/environment/castle.glb" id="4_lmvdk"]
 [ext_resource type="Script" uid="uid://vayehuhq2tbv" path="res://scripts/kill_floor.gd" id="5_kill_floor"]
 [ext_resource type="Script" uid="uid://27ohl7r1hfko" path="res://scripts/player_controller.gd" id="7_005lq"]
-[ext_resource type="PackedScene" uid="uid://dj45sc7thljah" path="res://assets/fence.glb" id="9_jm2bx"]
-[ext_resource type="PackedScene" uid="uid://dx5ynl338mtxf" path="res://assets/rockBoundary.glb" id="10_2tjhv"]
+[ext_resource type="PackedScene" uid="uid://dj45sc7thljah" path="res://assets/environment/fence.glb" id="9_jm2bx"]
+[ext_resource type="PackedScene" uid="uid://dx5ynl338mtxf" path="res://assets/environment/rockBoundary.glb" id="10_2tjhv"]
 [ext_resource type="PackedScene" uid="uid://bkxlxv6itygxv" path="res://scenes/camera/lakitu_camera.tscn" id="13_wsi66"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pkwu5"]
@@ -120,7 +120,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_7vrny")
 [node name="terrain" parent="Environment" unique_id=785275101 instance=ExtResource("1_35sdb")]
 transform = Transform3D(-0.39373296, 0, -3.442123e-08, 0, 0.39373296, 0, 3.442123e-08, 0, -0.39373296, 12.404686, -8.367155, 87.597824)
 
-[node name="terrain" parent="Environment/terrain" index="0" unique_id=524274461]
+[node name="terrain" parent="Environment/terrain" index="0" unique_id=1374504998]
 transform = Transform3D(235.52017, -1.0788259e-05, 0, -2.0589827e-05, -123.4033, 1.0788259e-05, 1.8000199e-12, 1.0788259e-05, 123.4033, 3.2431962, 29.796839, 166.82138)
 
 [node name="Trees" type="Node3D" parent="." unique_id=1052177369]
